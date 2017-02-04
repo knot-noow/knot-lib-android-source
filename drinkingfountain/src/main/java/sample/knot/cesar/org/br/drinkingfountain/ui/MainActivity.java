@@ -8,12 +8,15 @@
  *
  */
 
-package sample.knot.cesar.org.br.drinkingfountain;
+package sample.knot.cesar.org.br.drinkingfountain.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import sample.knot.cesar.org.br.drinkingfountain.R;
+
+public class
+MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
