@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~  Copyright (c) 2017, CESAR.
+  ~  All rights reserved.
+  ~
+  ~  This software may be modified and distributed under the terms
+  ~  of the BSD license. See the LICENSE file for details.
+  ~
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
+
+
+    <View
+        android:id="@+id/water_id"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/holo_blue_dark" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/water_bottle" />
+
+
+    <TextView
+        android:id="@+id/level_information"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+</FrameLayout>

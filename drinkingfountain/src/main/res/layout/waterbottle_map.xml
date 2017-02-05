@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~
+  ~  Copyright (c) 2017, CESAR.
+  ~  All rights reserved.
+  ~
+  ~  This software may be modified and distributed under the terms
+  ~  of the BSD license. See the LICENSE file for details.
+  ~
+  -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="2000px"
+    android:layout_height="2000px"
+    android:clipChildren="false"
+    >
+
+    <sample.knot.cesar.org.br.drinkingfountain.view.WaterbottleView
+        android:id="@+id/water_bottle_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:clipChildren="false"
+        android:id="@+id/circle"
+        android:background="@drawable/circle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</FrameLayout>
