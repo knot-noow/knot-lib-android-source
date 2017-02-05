@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -14,28 +16,58 @@ import sample.knot.cesar.org.br.drinkingfountain.view.KnotMap;
 public class MapActivity extends AppCompatActivity {
 
 
-    Button mBtnChangeFloor;
-    KnotMap mKnotMapFirstFloor, mKnotMapSecondFloor;
+   private Button mBtnChangeFloor;
+   private KnotMap mKnotMapFirstFloor, mKnotMapSecondFloor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        mBtnChangeFloor = (Button)findViewById(R.id.btn_change_floor);
+        mBtnChangeFloor = (Button) findViewById(R.id.btn_change_floor);
 
         mBtnChangeFloor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(mKnotMapFirstFloor.getVisibility() == View.VISIBLE){
-                    mKnotMapFirstFloor.setVisibility(View.GONE);
-                    mKnotMapSecondFloor.setVisibility(View.VISIBLE);
-                }else{
-                    mKnotMapSecondFloor.setVisibility(View.GONE);
-                    mKnotMapFirstFloor.setVisibility(View.VISIBLE);
-                }
+            public void onClick(final View v) {
+                changeFloor();
             }
         });
+
+        tempMockItems();
+
+    }
+
+    /**
+     * This method is used to change the map
+     */
+    private void changeFloor(){
+
+        final int animationDuration = 1000;
+        final int scaleIn = 0;
+        final int scaleOut = 1;
+
+        final String firstFloor = "1";
+        final String groundFloor = "T";
+
+        mBtnChangeFloor.animate().setDuration(animationDuration).scaleY(scaleIn).scaleX(scaleIn).setInterpolator(new BounceInterpolator()).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                if (mKnotMapFirstFloor.getVisibility() == View.VISIBLE) {
+                    mKnotMapFirstFloor.setVisibility(View.GONE);
+                    mKnotMapSecondFloor.setVisibility(View.VISIBLE);
+                    mBtnChangeFloor.setText(firstFloor);
+                } else {
+                    mKnotMapSecondFloor.setVisibility(View.GONE);
+                    mKnotMapFirstFloor.setVisibility(View.VISIBLE);
+                    mBtnChangeFloor.setText(groundFloor);
+                }
+
+                mBtnChangeFloor.animate().setDuration(animationDuration).scaleX(scaleOut).scaleY(scaleOut).setInterpolator(new BounceInterpolator());
+            }
+        }).start();
+    }
+
+    private void tempMockItems(){
 
         final ArrayList<WaterBottle> listFirst = new ArrayList<>();
         WaterBottle w1 = new WaterBottle(20);
@@ -74,19 +106,12 @@ public class MapActivity extends AppCompatActivity {
         second.add(w5);
         second.add(w6);
 
-        mKnotMapFirstFloor = (KnotMap)findViewById(R.id.map_first_floor);
-        mKnotMapSecondFloor = (KnotMap)findViewById(R.id.map_second_floor);
+        mKnotMapFirstFloor = (KnotMap) findViewById(R.id.map_first_floor);
+        mKnotMapSecondFloor = (KnotMap) findViewById(R.id.map_second_floor);
 
-        mKnotMapSecondFloor.fillMapWithWaterBottle(R.drawable.tir_second_floor,second,MapActivity.this);
-        mKnotMapFirstFloor.fillMapWithWaterBottle(R.drawable.tir_first_floor,listFirst,MapActivity.this);
-
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }, 1000);
-
-
+        mKnotMapSecondFloor.fillMapWithWaterBottle(R.drawable.tir_second_floor, second, MapActivity.this);
+        mKnotMapFirstFloor.fillMapWithWaterBottle(R.drawable.tir_first_floor, listFirst, MapActivity.this);
     }
+
+
 }
