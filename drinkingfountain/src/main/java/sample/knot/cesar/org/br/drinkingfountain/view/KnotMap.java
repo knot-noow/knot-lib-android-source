@@ -13,12 +13,15 @@ package sample.knot.cesar.org.br.drinkingfountain.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class KnotMap extends FrameLayout {
 
 
     private static final int ITEM_SIZE = 70;
-    private static final float SCALE_MIN = 0.4f;
+    private static final float SCALE_MIN = 0.5f;
     private static final float SCALE_MAX = 1.5f;
 
     private static final int NEGATIVE = -1;
@@ -59,10 +62,6 @@ public class KnotMap extends FrameLayout {
 
     private float mLastTouchX;
     private float mLastTouchY;
-
-    private float mSecondPointerLastTouchX;
-    private float mSecondPointerLastTouchY;
-
 
     private int mActivePointerId = INVALID_POINTER_ID;
 
@@ -161,18 +160,14 @@ public class KnotMap extends FrameLayout {
         switch (actionId) {
 
             case MotionEvent.ACTION_POINTER_DOWN:
-                mLastTouchX = ev.getRawX();
-                mLastTouchY = ev.getRawY();
+
+                mLastTouchX = ev.getX(FIRST_POSITION);
+                mLastTouchY = ev.getY(FIRST_POSITION);
                 break;
 
             case SECOND_POINTER_UP:
-                mSecondPointerLastTouchX = ev.getX(FIRST_POSITION);
-                mSecondPointerLastTouchY = ev.getY(FIRST_POSITION);
-                break;
-
-            case SECOND_POINTER_DOWN:
-                mSecondPointerLastTouchX = ev.getX(SECOND_POSITION);
-                mSecondPointerLastTouchY = ev.getY(SECOND_POSITION);
+                mLastTouchY = ev.getX(FIRST_POSITION);
+                mLastTouchY = ev.getY(FIRST_POSITION);
                 break;
 
             case MotionEvent.ACTION_DOWN:
@@ -215,14 +210,8 @@ public class KnotMap extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_POINTER_UP: {
-
-                final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                        >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-
-                final int newPointerIndex = pointerIndex == FIRST_POSITION ? SECOND_POSITION : FIRST_POSITION;
-                mLastTouchX = mSecondPointerLastTouchX;
-                mLastTouchY = mSecondPointerLastTouchY;
-                mActivePointerId = ev.getPointerId(newPointerIndex);
+                mLastTouchX = ev.getX(SECOND_POSITION);
+                mLastTouchY = ev.getY(SECOND_POSITION);
                 break;
             }
         }
@@ -255,7 +244,6 @@ public class KnotMap extends FrameLayout {
      */
     private boolean testMapLimit() {
         boolean result = false;
-
 
         int leftLimit = (int) (((mMap.getWidth()) - (mMap.getHeight() / MAP_LIMIT)) * mScaleFactor * NEGATIVE);
         int rightLimit = (int) ((getWidth() - (mMap.getHeight() / MAP_LIMIT)) * mScaleFactor);

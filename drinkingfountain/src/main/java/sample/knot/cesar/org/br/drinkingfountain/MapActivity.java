@@ -1,10 +1,18 @@
+/*
+ *
+ *  Copyright (c) 2017, CESAR.
+ *  All rights reserved.
+ *
+ *  This software may be modified and distributed under the terms
+ *  of the BSD license. See the LICENSE file for details.
+ *
+ */
+
 package sample.knot.cesar.org.br.drinkingfountain;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 
@@ -65,6 +73,8 @@ public class MapActivity extends AppCompatActivity {
                 mBtnChangeFloor.animate().setDuration(animationDuration).scaleX(scaleOut).scaleY(scaleOut).setInterpolator(new BounceInterpolator());
             }
         }).start();
+
+
     }
 
     private void tempMockItems(){
