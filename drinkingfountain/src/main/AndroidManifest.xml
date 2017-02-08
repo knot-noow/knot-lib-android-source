@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~
   ~  Copyright (c) 2017, CESAR.
   ~  All rights reserved.
@@ -6,7 +7,7 @@
   ~  This software may be modified and distributed under the terms
   ~  of the BSD license. See the LICENSE file for details.
   ~
--->
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sample.knot.cesar.org.br.drinkingfountain">
 
@@ -23,7 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapActivity"></activity>
+        
+	    <activity android:name=".MapActivity"></activity>
+
+        <!-- Service used to sync all data -->
+        <service
+            android:name=".service.SyncService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="sample.knot.cesar.org.br.drinkingfountain.ACTION_SYNC_DATA" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="sample.knot.cesar.org.br.drinkingfountain.ACTION_STOP_SYNC_DATA" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="sample.knot.cesar.org.br.drinkingfountain.ACTION_SYNC_STATUS" />
+            </intent-filter>
+        </service>
+        <!-- End -->
+
     </application>
 
 </manifest>
