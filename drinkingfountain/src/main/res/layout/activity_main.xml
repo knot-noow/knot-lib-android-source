@@ -17,7 +17,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sample.knot.cesar.org.br.drinkingfountain.MainActivity">
+    tools:context="sample.knot.cesar.org.br.drinkingfountain.ui.MainActivity">
 
     <Button
         android:id="@+id/btn_go_map"

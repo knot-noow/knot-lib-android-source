@@ -8,7 +8,7 @@
  *
  */
 
-package sample.knot.cesar.org.br.drinkingfountain;
+package sample.knot.cesar.org.br.drinkingfountain.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
 import sample.knot.cesar.org.br.drinkingfountain.view.KnotMap;
 
