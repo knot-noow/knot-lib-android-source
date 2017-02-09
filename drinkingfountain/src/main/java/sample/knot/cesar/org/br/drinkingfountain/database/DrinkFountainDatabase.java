@@ -22,7 +22,7 @@ public class DrinkFountainDatabase extends SQLiteOpenHelper {
 
     private static final int VERSION_DATABASE = 1;
 
-    private static final String SQL_CREATE = "create_script_smit.sql";
+    private static final String SQL_CREATE = "script_create_database.sql";
 
 
     private Context mContext;
@@ -35,12 +35,13 @@ public class DrinkFountainDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        LogLib.printD("onCreate Database"+sqLiteDatabase.toString());
         executeSqlCommand(sqLiteDatabase, SQL_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        LogLib.printD("onUpgrade Database"+sqLiteDatabase.toString());
     }
 
     /**
@@ -49,6 +50,7 @@ public class DrinkFountainDatabase extends SQLiteOpenHelper {
      * @param sqlFileName
      */
     private void executeSqlCommand(SQLiteDatabase sqLiteDatabase, String sqlFileName) {
+        LogLib.printD("executeSqlCommand Database");
         try {
             //Get all sql instructions from the SQL_NAME_ASSETS file.
             String[] sqlInstructions = Util.getStatementSql(mContext, sqlFileName);
