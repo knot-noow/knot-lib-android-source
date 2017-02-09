@@ -10,12 +10,13 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.database.DrinkFountainDAO;
-import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDataBase;
 
 public class
 MainActivity extends AppCompatActivity {
@@ -25,6 +26,14 @@ MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        (findViewById(R.id.btn_go_map)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,MapActivity.class));
+            }
+        });
+
         DrinkFountainDAO dao = new DrinkFountainDAO(this);
+
     }
 }
