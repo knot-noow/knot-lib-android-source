@@ -19,13 +19,6 @@ import android.support.annotation.NonNull;
 public interface KnotCommunication {
 
 
-    /**
-     * Configure the server and owner of the your device net
-     * @param endPoint The url that represents tha path of the knot cloud
-     * @param ownerUuid The uuid of the owner
-     * @param ownerToken The toke of th owner
-     */
-    public void setUp(@NonNull String endPoint,@NonNull String ownerUuid,@NonNull String ownerToken);
 
     /**
      * Get all devices of the specif owner

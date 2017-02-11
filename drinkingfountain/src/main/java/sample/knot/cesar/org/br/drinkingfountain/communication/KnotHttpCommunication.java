@@ -9,13 +9,14 @@
  */
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.org.cesar.knot.lib.connection.FacadeConnection;
 import br.org.cesar.knot.lib.event.Event;
+import sample.knot.cesar.org.br.drinkingfountain.database.DrinkFountainDAO;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 
@@ -25,7 +26,13 @@ import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 
 public class KnotHttpCommunication implements KnotCommunication {
 
+    private static final String ENDPOINT = "";
+    private static final String UUID_OWNER = "";
+    private static final String TOKEN_OWNER = "";
+
+
     private static final Object lock = new Object();
+    private DrinkFountainDAO mDrinkFountainDAO;
 
     public FacadeConnection mKnotApi;
 
@@ -35,8 +42,15 @@ public class KnotHttpCommunication implements KnotCommunication {
     /**
      * Private constructor
      */
-    private KnotHttpCommunication(){
+    private KnotHttpCommunication(Context context) {
+        //Initializing the KNOT API
         mKnotApi = FacadeConnection.getInstance();
+
+        // Configuring the API
+        mKnotApi.setupHttp(ENDPOINT, UUID_OWNER, TOKEN_OWNER);
+
+        //Initializing the DATABASE to save app informations
+        mDrinkFountainDAO = new DrinkFountainDAO(context);
     }
 
     /**
@@ -44,19 +58,15 @@ public class KnotHttpCommunication implements KnotCommunication {
      *
      * @return the instance
      */
-    public static KnotHttpCommunication getInstance() {
+    public static KnotHttpCommunication getInstance(Context context) {
         synchronized (lock) {
             if (sInstance == null) {
-                sInstance = new KnotHttpCommunication();
+                sInstance = new KnotHttpCommunication(context);
             }
             return sInstance;
         }
     }
 
-    @Override
-    public void setUp(@NonNull String endPoint, @NonNull String ownerUuid, @NonNull String ownerToken) {
-            
-    }
 
     @Override
     public void getAllDevices() {
@@ -64,10 +74,13 @@ public class KnotHttpCommunication implements KnotCommunication {
 
         mKnotApi.httpGetDeviceList(mDrinkFountainDeviceList, new Event<List<DrinkFountainDevice>>() {
             @Override
-            public void onEventFinish(List<DrinkFountainDevice> object) {
+            public void onEventFinish(List<DrinkFountainDevice> deviceList) {
 
-                //Save the list of device at the repository
-                //Todo - Call db;
+                if(deviceList!=null){
+                    for (DrinkFountainDevice drinkFountainDevice:deviceList) {
+                        mDrinkFountainDAO.insertDrinkFountain(drinkFountainDevice);
+                    }
+                }
             }
 
             @Override
