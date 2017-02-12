@@ -10,6 +10,8 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.model;
 
+import android.provider.BaseColumns;
+
 import br.org.cesar.knot.lib.model.AbstractThingData;
 
 /**
@@ -50,6 +52,40 @@ public class WaterLevelData extends AbstractThingData {
 
     public void setCurrentValue(float currentValue) {
         this.currentValue = currentValue;
+    }
+
+    public static class Columns implements BaseColumns {
+
+        /**
+         * Table name for water level data
+         *
+         * */
+        public static final String TABLE_WATER_LEVEL_DATA = "water_level_data";
+
+        /**
+         * id of walter level data
+         *
+         * */
+        public static final String COLUMN_ID = "_id";
+
+        /**
+         * uuid of the current device
+         *
+         * */
+        public static final String COLUMN_DRINK_FOUNTAIN_ID = "water_fountain_uuid";
+
+        /**
+         * token of the device
+         *
+         * */
+        public static final String COLUMN_TOKEN = "current_value";
+
+        /**
+         * Timestamp column of specific data collect
+         *
+         * */
+        public static final String COLUMN_TIMESTAMP = "time_stamp";
+
     }
 }
 
