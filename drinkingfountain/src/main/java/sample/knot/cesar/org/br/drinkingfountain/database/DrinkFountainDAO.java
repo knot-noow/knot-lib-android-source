@@ -50,7 +50,7 @@ class DrinkFountainDAO {
         if (tempDevice == null) {
             rowsInserted = sqliteDatabase.insert(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN, null, buildContent(fountainDevice));
         } else {
-            rowsInserted =  updateDrinkFountainDevice(fountainDevice);
+            rowsInserted = updateDrinkFountainDevice(fountainDevice);
         }
         return rowsInserted;
     }
@@ -71,6 +71,7 @@ class DrinkFountainDAO {
 
     /**
      * get a drink fountain device by UUID
+     *
      * @param deviceUUID uuid of specific device
      * @return
      */
@@ -79,7 +80,7 @@ class DrinkFountainDAO {
         DrinkFountainDevice drinkFountainDevice = null;
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 null, WHERE_DRINK_FOUNTAIN_UUID, args, null, null, null);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             drinkFountainDevice = buildDrinkFountainByCursor(cursor);
         }
         cursor.close();
@@ -94,7 +95,7 @@ class DrinkFountainDAO {
      * @return true if success false otherwise
      */
     public long updateDrinkFountainDevice(DrinkFountainDevice drinkFountain) {
-        String[] args = new String[] {drinkFountain.getUuid()};
+        String[] args = new String[]{drinkFountain.getUuid()};
 
         int rowsAffected = sqliteDatabase.update(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 buildContent(drinkFountain), WHERE_DRINK_FOUNTAIN_UUID, args);
@@ -112,7 +113,7 @@ class DrinkFountainDAO {
 
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 null, null, null, null, null, null);
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     DrinkFountainDevice currentDevice = buildDrinkFountainByCursor(cursor);
@@ -171,7 +172,7 @@ class DrinkFountainDAO {
     private DrinkFountainDevice buildDrinkFountainByCursor(Cursor drinkCursor) {
         DrinkFountainDevice drinkFountainDevice = null;
 
-        if(drinkCursor != null) {
+        if (drinkCursor != null) {
 
             drinkFountainDevice = new DrinkFountainDevice();
 
@@ -202,9 +203,38 @@ class DrinkFountainDAO {
      * @return the row index affected
      */
     public long insertWalterLevelData(WaterLevelData waterLevelData) {
-        return  sqliteDatabase.insert(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA, null,
+        return sqliteDatabase.insert(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA, null,
                 buildContentValuesByWalterLevel(waterLevelData));
     }
+
+    /**
+     * Insert a list of walter level in database
+     *
+     * @param waterLevelDataList that will be inserted
+     * @return the row index affected
+     */
+    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) {
+        int rowsInserted = 0;
+
+        sqliteDatabase.beginTransaction();
+        for (WaterLevelData currentWalterLevelData : waterLevelDataList) {
+            if (currentWalterLevelData != null) {
+                long rowId = insertWalterLevelData(currentWalterLevelData);
+
+                if (rowId != -1) {
+                    rowsInserted++;
+                }
+            }
+        }
+
+        if (rowsInserted > 0 ) {
+            sqliteDatabase.setTransactionSuccessful();
+        }
+        sqliteDatabase.endTransaction();
+
+        return rowsInserted;
+    }
+
 
     /**
      * Gets the device level history
@@ -215,11 +245,11 @@ class DrinkFountainDAO {
     public List<WaterLevelData> getDeviceHistory(String drinkFountainUUID) {
         ArrayList<WaterLevelData> waterLevelList = new ArrayList<>();
 
-        String[] args = new String[] {drinkFountainUUID};
+        String[] args = new String[]{drinkFountainUUID};
 
         Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
                 null, WHERE_WALTER_DRINK_UUID, args, null, null, null);
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     WaterLevelData currentWalterLevel = buildWalterLevelDataByCursor(cursor);
@@ -236,6 +266,7 @@ class DrinkFountainDAO {
 
     /**
      * get a current level value collected of specific device.
+     *
      * @param deviceUUID the uuid of specific device
      * @return the last values collected of the device
      */
@@ -245,7 +276,7 @@ class DrinkFountainDAO {
 
         Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
                 null, WHERE_WALTER_DRINK_UUID, args, null, null, WaterLevelData.Columns.COLUMN_TIMESTAMP + DESC_CLAUSE);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
 
             walterLevelData = buildWalterLevelDataByCursor(cursor);
         }
@@ -291,7 +322,7 @@ class DrinkFountainDAO {
     private WaterLevelData buildWalterLevelDataByCursor(Cursor walterLevelCursor) {
         WaterLevelData waterLevelCollected = null;
 
-        if(walterLevelCursor != null) {
+        if (walterLevelCursor != null) {
 
             waterLevelCollected = new WaterLevelData();
 

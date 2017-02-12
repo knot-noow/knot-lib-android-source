@@ -102,4 +102,14 @@ public class FacadeDatabase {
         return mDrinkFountainDAO.insertWalterLevelData(waterLevelData);
     }
 
+    /**
+     * Insert a list of walter level in database
+     *
+     * @param waterLevelDataList that will be inserted
+     * @return the row index affected
+     */
+    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) {
+        return mDrinkFountainDAO.insertWalterLevelDataList(waterLevelDataList);
+    }
+
 }
