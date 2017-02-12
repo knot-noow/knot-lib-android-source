@@ -14,10 +14,6 @@ import android.provider.BaseColumns;
 
 import br.org.cesar.knot.lib.model.AbstractThingDevice;
 
-/**
- * Created by wallace on 04/02/17.
- */
-
 public class DrinkFountainDevice extends AbstractThingDevice {
 
     private String description;
@@ -30,7 +26,8 @@ public class DrinkFountainDevice extends AbstractThingDevice {
 
     @Override
     public String toString() {
-        String value = super.toString() + '\'' + " Description = " + getDescription() ;
+        String value = super.toString() + " Description = " + getDescription() +
+                " PositionX = " + getPositionX() + " PositionY = " + getPositionY();
         return value;
     }
 
@@ -100,13 +97,7 @@ public class DrinkFountainDevice extends AbstractThingDevice {
          * Table name for drink fountain
          *
          * */
-        public static final String TABLE_DRINK_FOUNTAIN = "drink_fountain";
-
-        /**
-         * id of drink fountain
-         *
-         * */
-        public static final String COLUMN_ID = "_id";
+        public static final String TABLE_DRINK_FOUNTAIN = "tb_drink_fountain";
 
         /**
          * uuid of the device
@@ -130,7 +121,7 @@ public class DrinkFountainDevice extends AbstractThingDevice {
          * position Y of the device
          *
          * */
-        public static final String COLUMN_POSITION_Y = "position_x";
+        public static final String COLUMN_POSITION_Y = "position_y";
 
         /**
          * description of the device
