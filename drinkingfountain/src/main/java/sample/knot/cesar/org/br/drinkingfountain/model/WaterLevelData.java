@@ -10,22 +10,17 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.model;
 
-import br.org.cesar.knot.lib.model.AbstractThingData;
+import android.provider.BaseColumns;
 
-/**
- * Created by wallace on 04/02/17.
- */
+import br.org.cesar.knot.lib.model.AbstractThingData;
 
 public class WaterLevelData extends AbstractThingData {
 
-    private int _id;
+    private long _id;
     private String waterFountainUUID;
     private float currentValue;
 
-    public WaterLevelData(int id, String waterFountainUUID, float currentValue) {
-        _id = id;
-        this.waterFountainUUID = waterFountainUUID;
-        this.currentValue = currentValue;
+    public WaterLevelData(){
     }
 
     public String getWaterFountainUUID() {
@@ -36,12 +31,12 @@ public class WaterLevelData extends AbstractThingData {
         this.waterFountainUUID = waterFountainUUID;
     }
 
-    public int get_id() {
+    public long getId() {
         return _id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(long id) {
+        this._id = id;
     }
 
     public float getCurrentValue() {
@@ -50,6 +45,42 @@ public class WaterLevelData extends AbstractThingData {
 
     public void setCurrentValue(float currentValue) {
         this.currentValue = currentValue;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public static class Columns implements BaseColumns {
+
+        /**
+         * Table name for water level data
+         *
+         * */
+        public static final String TABLE_WATER_LEVEL_DATA = "tb_water_level_data";
+
+        /**
+         * uuid of the current device
+         *
+         * */
+        public static final String COLUMN_DRINK_FOUNTAIN_UUID = "drink_fountain_uuid";
+
+        /**
+         * token of the device
+         *
+         * */
+        public static final String COLUMN_CURRENT_VALUE = "current_value";
+
+        /**
+         * Timestamp column of specific data collect
+         *
+         * */
+        public static final String COLUMN_TIMESTAMP = "time_stamp";
+
     }
 }
 
