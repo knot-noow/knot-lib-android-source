@@ -16,10 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.database.DrinkFountainDAO;
 
-public class
-MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,7 @@ MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,MapActivity.class));
             }
         });
-
-        DrinkFountainDAO dao = new DrinkFountainDAO(this);
-
     }
+
+
 }
