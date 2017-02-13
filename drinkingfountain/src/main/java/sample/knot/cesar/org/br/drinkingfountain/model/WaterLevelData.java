@@ -16,7 +16,6 @@ import br.org.cesar.knot.lib.model.AbstractThingData;
 
 public class WaterLevelData extends AbstractThingData {
 
-    private long _id;
     private String waterFountainUUID;
     private float currentValue;
 
@@ -29,14 +28,6 @@ public class WaterLevelData extends AbstractThingData {
 
     public void setWaterFountainUUID(String waterFountainUUID) {
         this.waterFountainUUID = waterFountainUUID;
-    }
-
-    public long getId() {
-        return _id;
-    }
-
-    public void setId(long id) {
-        this._id = id;
     }
 
     public float getCurrentValue() {
@@ -53,6 +44,13 @@ public class WaterLevelData extends AbstractThingData {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        String value = super.toString() + " waterFountainUUID = " + getWaterFountainUUID() +
+                " currentValue = " + getCurrentValue();
+        return value;
     }
 
     public static class Columns implements BaseColumns {
@@ -82,5 +80,6 @@ public class WaterLevelData extends AbstractThingData {
         public static final String COLUMN_TIMESTAMP = "time_stamp";
 
     }
+
 }
 

@@ -46,6 +46,16 @@ public class FacadeDatabase {
     }
 
     /**
+     * Insert a list of drink fountain in database
+     *
+     * @param fountainDeviceList that will be inserted
+     * @return true if inserted correctly false otherwise
+     */
+    public long insertDrinkFountainList(List<DrinkFountainDevice> fountainDeviceList) {
+        return mDrinkFountainDAO.insertDrinkFountainList(fountainDeviceList);
+    }
+
+    /**
      * Delete a drink fountain from database.
      *
      * @param drinkFountainUUID the drink fountain object
@@ -86,9 +96,9 @@ public class FacadeDatabase {
     /**
      * Get a current level value collected of specific device.
      * @param deviceUUID the uuid of specific device
-     * @return the last values collected of the device
+     * @return the object last collected of the specific device
      */
-    public float getCurrentLevelByDeviceUUID(String deviceUUID) {
+    public WaterLevelData getCurrentLevelByDeviceUUID(String deviceUUID) {
         return mDrinkFountainDAO.getCurrentLevelByDeviceUUID(deviceUUID);
     }
 

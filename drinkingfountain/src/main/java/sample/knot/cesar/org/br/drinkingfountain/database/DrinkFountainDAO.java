@@ -39,7 +39,7 @@ class DrinkFountainDAO {
     }
 
     /**
-     * Insert a new drink fountain in KNOT database
+     * Insert a new drink fountain in database
      *
      * @param fountainDevice that will be inserted
      * @return true if inserted correctly false otherwise
@@ -54,6 +54,27 @@ class DrinkFountainDAO {
         }
         return rowsInserted;
     }
+
+    /**
+     * Insert a list of drink fountain in database
+     *
+     * @param fountainDeviceList that will be inserted
+     * @return true if inserted correctly false otherwise
+     */
+    public long insertDrinkFountainList(List<DrinkFountainDevice> fountainDeviceList) {
+        long rowsInserted = -1;
+
+        for (DrinkFountainDevice currentDevice: fountainDeviceList) {
+            DrinkFountainDevice tempDevice = getDrinkFountainDeviceByUUID(currentDevice.getUuid());
+            if (tempDevice == null) {
+                rowsInserted = sqliteDatabase.insert(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN, null, buildContent(currentDevice));
+            } else {
+                rowsInserted = updateDrinkFountainDevice(currentDevice);
+            }
+        }
+        return rowsInserted;
+    }
+
 
     /**
      * Delete a drink fountain from database.
@@ -138,8 +159,6 @@ class DrinkFountainDAO {
         ContentValues contentValues = new ContentValues();
 
         if (drinkFountainDevice != null) {
-            contentValues.put(DrinkFountainDevice.Columns._ID, drinkFountainDevice.getId());
-
             if (drinkFountainDevice.getUuid() != null) {
                 contentValues.put(DrinkFountainDevice.Columns.COLUMN_UUID, drinkFountainDevice.getUuid());
             }
@@ -176,14 +195,12 @@ class DrinkFountainDAO {
 
             drinkFountainDevice = new DrinkFountainDevice();
 
-            int indexId = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns._ID);
             int indexUUID = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_UUID);
             int indexToken = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_TOKEN);
             int indexPositionX = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_X);
             int indexPositionY = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_Y);
             int indexDescription = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION);
 
-            drinkFountainDevice.setId(drinkCursor.getLong(indexId));
             drinkFountainDevice.setUuid(drinkCursor.getString(indexUUID));
             drinkFountainDevice.setToken(drinkCursor.getString(indexToken));
             drinkFountainDevice.setPositionX(drinkCursor.getInt(indexPositionX));
@@ -270,7 +287,7 @@ class DrinkFountainDAO {
      * @param deviceUUID the uuid of specific device
      * @return the last values collected of the device
      */
-    public float getCurrentLevelByDeviceUUID(String deviceUUID) {
+    public WaterLevelData getCurrentLevelByDeviceUUID(String deviceUUID) {
         String[] args = new String[]{deviceUUID};
         WaterLevelData walterLevelData = null;
 
@@ -282,7 +299,7 @@ class DrinkFountainDAO {
         }
         cursor.close();
 
-        return walterLevelData != null ? walterLevelData.getCurrentValue() : INVALID_LEVEL;
+        return walterLevelData;
     }
 
     /**
@@ -296,8 +313,6 @@ class DrinkFountainDAO {
         ContentValues contentValues = new ContentValues();
 
         if (waterLevelData != null) {
-            contentValues.put(DrinkFountainDevice.Columns._ID, waterLevelData.getId());
-
             if (waterLevelData.getWaterFountainUUID() != null) {
                 contentValues.put(WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID, waterLevelData.getWaterFountainUUID());
             }
@@ -326,13 +341,11 @@ class DrinkFountainDAO {
 
             waterLevelCollected = new WaterLevelData();
 
-            int indexId = walterLevelCursor.getColumnIndex(WaterLevelData.Columns._ID);
             int indexDrinkFountainUUID = walterLevelCursor.getColumnIndex(
                     WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID);
             int indexCurrentValue = walterLevelCursor.getColumnIndex(WaterLevelData.Columns.COLUMN_CURRENT_VALUE);
             int indexTimestamp = walterLevelCursor.getColumnIndex(WaterLevelData.Columns.COLUMN_TIMESTAMP);
 
-            waterLevelCollected.setId(walterLevelCursor.getLong(indexId));
             waterLevelCollected.setWaterFountainUUID(walterLevelCursor.getString(indexDrinkFountainUUID));
             waterLevelCollected.setCurrentValue(walterLevelCursor.getFloat(indexCurrentValue));
             waterLevelCollected.setTimestamp(walterLevelCursor.getString(indexTimestamp));

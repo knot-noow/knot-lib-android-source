@@ -17,7 +17,6 @@ import br.org.cesar.knot.lib.model.AbstractThingDevice;
 public class DrinkFountainDevice extends AbstractThingDevice {
 
     private String description;
-    private long _id;
     private int positionX, positionY;
 
 
@@ -74,21 +73,6 @@ public class DrinkFountainDevice extends AbstractThingDevice {
      */
     public void setPositionX(int positionX) {
         this.positionX = positionX;
-    }
-
-    /**
-     * Get the ID of drink fountain device
-     */
-    public long getId() {
-        return _id;
-    }
-
-    /**
-     * Get the ID of drink fountain device
-     * @param id the new id of device
-     */
-    public void setId(long id) {
-        this._id = id;
     }
 
     public static class Columns implements BaseColumns {
