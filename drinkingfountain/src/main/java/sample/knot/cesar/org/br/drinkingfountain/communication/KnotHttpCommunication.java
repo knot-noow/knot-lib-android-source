@@ -16,9 +16,10 @@ import java.util.List;
 
 import br.org.cesar.knot.lib.connection.FacadeConnection;
 import br.org.cesar.knot.lib.event.Event;
-import sample.knot.cesar.org.br.drinkingfountain.database.DrinkFountainDAO;
+import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
+import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
 /**
  * Created by usuario on 11/02/17.
@@ -32,7 +33,8 @@ public class KnotHttpCommunication implements KnotCommunication {
 
 
     private static final Object lock = new Object();
-    private DrinkFountainDAO mDrinkFountainDAO;
+
+    private FacadeDatabase mDrinkFountainDB;
 
     public FacadeConnection mKnotApi;
 
@@ -50,7 +52,7 @@ public class KnotHttpCommunication implements KnotCommunication {
         mKnotApi.setupHttp(ENDPOINT, UUID_OWNER, TOKEN_OWNER);
 
         //Initializing the DATABASE to save app informations
-        mDrinkFountainDAO = new DrinkFountainDAO(context);
+        mDrinkFountainDB = FacadeDatabase.getInstance();
     }
 
     /**
@@ -78,14 +80,14 @@ public class KnotHttpCommunication implements KnotCommunication {
 
                 if(deviceList!=null){
                     for (DrinkFountainDevice drinkFountainDevice:deviceList) {
-                        mDrinkFountainDAO.insertDrinkFountain(drinkFountainDevice);
+                        mDrinkFountainDB.insertDrinkFountain(drinkFountainDevice);
                     }
                 }
             }
 
             @Override
             public void onEventError(Exception e) {
-
+                LogKnotDrinkFountain.printE(e);
             }
         });
     }
@@ -95,19 +97,28 @@ public class KnotHttpCommunication implements KnotCommunication {
 
         List<WaterLevelData> mWaterLevelDatas = new ArrayList<>();
 
-        mKnotApi.httpGetDataList(deviceUuid, mWaterLevelDatas, new Event<List<WaterLevelData>>() {
-            @Override
-            public void onEventFinish(List<WaterLevelData> object) {
 
-                //Save the list of data at the repository
-                //Todo - Call db;
-            }
+        List<DrinkFountainDevice> mDrinkFountainDeviceList = mDrinkFountainDB.getAllDrinkFountain();
 
-            @Override
-            public void onEventError(Exception e) {
+        for ( final DrinkFountainDevice drinkFountainDevice: mDrinkFountainDeviceList) {
 
-            }
-        });
+            mKnotApi.httpGetDataList(drinkFountainDevice.getUuid(), mWaterLevelDatas, new Event<List<WaterLevelData>>() {
+                @Override
+                public void onEventFinish(List<WaterLevelData> object) {
+
+                    //Save the list of data at the repository
+                    //Todo - Call db;
+                }
+
+                @Override
+                public void onEventError(Exception e) {
+                    LogKnotDrinkFountain.printE(e);
+                }
+            });
+
+        }
+
+
 
     }
 
