@@ -39,7 +39,7 @@ class DrinkFountainDAO {
     }
 
     /**
-     * Insert a new drink fountain in KNOT database
+     * Insert a new drink fountain in database
      *
      * @param fountainDevice that will be inserted
      * @return true if inserted correctly false otherwise
@@ -50,10 +50,31 @@ class DrinkFountainDAO {
         if (tempDevice == null) {
             rowsInserted = sqliteDatabase.insert(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN, null, buildContent(fountainDevice));
         } else {
-            rowsInserted =  updateDrinkFountainDevice(fountainDevice);
+            rowsInserted = updateDrinkFountainDevice(fountainDevice);
         }
         return rowsInserted;
     }
+
+    /**
+     * Insert a list of drink fountain in database
+     *
+     * @param fountainDeviceList that will be inserted
+     * @return true if inserted correctly false otherwise
+     */
+    public long insertDrinkFountainList(List<DrinkFountainDevice> fountainDeviceList) {
+        long rowsInserted = -1;
+
+        for (DrinkFountainDevice currentDevice: fountainDeviceList) {
+            DrinkFountainDevice tempDevice = getDrinkFountainDeviceByUUID(currentDevice.getUuid());
+            if (tempDevice == null) {
+                rowsInserted = sqliteDatabase.insert(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN, null, buildContent(currentDevice));
+            } else {
+                rowsInserted = updateDrinkFountainDevice(currentDevice);
+            }
+        }
+        return rowsInserted;
+    }
+
 
     /**
      * Delete a drink fountain from database.
@@ -71,6 +92,7 @@ class DrinkFountainDAO {
 
     /**
      * get a drink fountain device by UUID
+     *
      * @param deviceUUID uuid of specific device
      * @return
      */
@@ -79,7 +101,7 @@ class DrinkFountainDAO {
         DrinkFountainDevice drinkFountainDevice = null;
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 null, WHERE_DRINK_FOUNTAIN_UUID, args, null, null, null);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             drinkFountainDevice = buildDrinkFountainByCursor(cursor);
         }
         cursor.close();
@@ -94,7 +116,7 @@ class DrinkFountainDAO {
      * @return true if success false otherwise
      */
     public long updateDrinkFountainDevice(DrinkFountainDevice drinkFountain) {
-        String[] args = new String[] {drinkFountain.getUuid()};
+        String[] args = new String[]{drinkFountain.getUuid()};
 
         int rowsAffected = sqliteDatabase.update(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 buildContent(drinkFountain), WHERE_DRINK_FOUNTAIN_UUID, args);
@@ -112,7 +134,7 @@ class DrinkFountainDAO {
 
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 null, null, null, null, null, null);
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     DrinkFountainDevice currentDevice = buildDrinkFountainByCursor(cursor);
@@ -137,8 +159,6 @@ class DrinkFountainDAO {
         ContentValues contentValues = new ContentValues();
 
         if (drinkFountainDevice != null) {
-            contentValues.put(DrinkFountainDevice.Columns._ID, drinkFountainDevice.getId());
-
             if (drinkFountainDevice.getUuid() != null) {
                 contentValues.put(DrinkFountainDevice.Columns.COLUMN_UUID, drinkFountainDevice.getUuid());
             }
@@ -171,18 +191,16 @@ class DrinkFountainDAO {
     private DrinkFountainDevice buildDrinkFountainByCursor(Cursor drinkCursor) {
         DrinkFountainDevice drinkFountainDevice = null;
 
-        if(drinkCursor != null) {
+        if (drinkCursor != null) {
 
             drinkFountainDevice = new DrinkFountainDevice();
 
-            int indexId = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns._ID);
             int indexUUID = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_UUID);
             int indexToken = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_TOKEN);
             int indexPositionX = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_X);
             int indexPositionY = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_Y);
             int indexDescription = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION);
 
-            drinkFountainDevice.setId(drinkCursor.getLong(indexId));
             drinkFountainDevice.setUuid(drinkCursor.getString(indexUUID));
             drinkFountainDevice.setToken(drinkCursor.getString(indexToken));
             drinkFountainDevice.setPositionX(drinkCursor.getInt(indexPositionX));
@@ -202,9 +220,38 @@ class DrinkFountainDAO {
      * @return the row index affected
      */
     public long insertWalterLevelData(WaterLevelData waterLevelData) {
-        return  sqliteDatabase.insert(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA, null,
+        return sqliteDatabase.insert(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA, null,
                 buildContentValuesByWalterLevel(waterLevelData));
     }
+
+    /**
+     * Insert a list of walter level in database
+     *
+     * @param waterLevelDataList that will be inserted
+     * @return the row index affected
+     */
+    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) {
+        int rowsInserted = 0;
+
+        sqliteDatabase.beginTransaction();
+        for (WaterLevelData currentWalterLevelData : waterLevelDataList) {
+            if (currentWalterLevelData != null) {
+                long rowId = insertWalterLevelData(currentWalterLevelData);
+
+                if (rowId != -1) {
+                    rowsInserted++;
+                }
+            }
+        }
+
+        if (rowsInserted > 0 ) {
+            sqliteDatabase.setTransactionSuccessful();
+        }
+        sqliteDatabase.endTransaction();
+
+        return rowsInserted;
+    }
+
 
     /**
      * Gets the device level history
@@ -215,11 +262,11 @@ class DrinkFountainDAO {
     public List<WaterLevelData> getDeviceHistory(String drinkFountainUUID) {
         ArrayList<WaterLevelData> waterLevelList = new ArrayList<>();
 
-        String[] args = new String[] {drinkFountainUUID};
+        String[] args = new String[]{drinkFountainUUID};
 
         Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
                 null, WHERE_WALTER_DRINK_UUID, args, null, null, null);
-        if(cursor != null) {
+        if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     WaterLevelData currentWalterLevel = buildWalterLevelDataByCursor(cursor);
@@ -236,22 +283,23 @@ class DrinkFountainDAO {
 
     /**
      * get a current level value collected of specific device.
+     *
      * @param deviceUUID the uuid of specific device
      * @return the last values collected of the device
      */
-    public float getCurrentLevelByDeviceUUID(String deviceUUID) {
+    public WaterLevelData getCurrentLevelByDeviceUUID(String deviceUUID) {
         String[] args = new String[]{deviceUUID};
         WaterLevelData walterLevelData = null;
 
         Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
                 null, WHERE_WALTER_DRINK_UUID, args, null, null, WaterLevelData.Columns.COLUMN_TIMESTAMP + DESC_CLAUSE);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
 
             walterLevelData = buildWalterLevelDataByCursor(cursor);
         }
         cursor.close();
 
-        return walterLevelData != null ? walterLevelData.getCurrentValue() : INVALID_LEVEL;
+        return walterLevelData;
     }
 
     /**
@@ -265,8 +313,6 @@ class DrinkFountainDAO {
         ContentValues contentValues = new ContentValues();
 
         if (waterLevelData != null) {
-            contentValues.put(DrinkFountainDevice.Columns._ID, waterLevelData.getId());
-
             if (waterLevelData.getWaterFountainUUID() != null) {
                 contentValues.put(WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID, waterLevelData.getWaterFountainUUID());
             }
@@ -291,17 +337,15 @@ class DrinkFountainDAO {
     private WaterLevelData buildWalterLevelDataByCursor(Cursor walterLevelCursor) {
         WaterLevelData waterLevelCollected = null;
 
-        if(walterLevelCursor != null) {
+        if (walterLevelCursor != null) {
 
             waterLevelCollected = new WaterLevelData();
 
-            int indexId = walterLevelCursor.getColumnIndex(WaterLevelData.Columns._ID);
             int indexDrinkFountainUUID = walterLevelCursor.getColumnIndex(
                     WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID);
             int indexCurrentValue = walterLevelCursor.getColumnIndex(WaterLevelData.Columns.COLUMN_CURRENT_VALUE);
             int indexTimestamp = walterLevelCursor.getColumnIndex(WaterLevelData.Columns.COLUMN_TIMESTAMP);
 
-            waterLevelCollected.setId(walterLevelCursor.getLong(indexId));
             waterLevelCollected.setWaterFountainUUID(walterLevelCursor.getString(indexDrinkFountainUUID));
             waterLevelCollected.setCurrentValue(walterLevelCursor.getFloat(indexCurrentValue));
             waterLevelCollected.setTimestamp(walterLevelCursor.getString(indexTimestamp));
