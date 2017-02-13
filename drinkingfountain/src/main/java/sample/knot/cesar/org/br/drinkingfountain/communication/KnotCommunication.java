@@ -28,9 +28,8 @@ public interface KnotCommunication {
 
     /**
      * Get data information about device behavior
-     * @param deviceUuid device identification
      */
-    public void getDataByDevice(String deviceUuid);
+    public void getDataByDevice();
 
 
 

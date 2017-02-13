@@ -27,17 +27,26 @@ import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
 public class KnotHttpCommunication implements KnotCommunication {
 
-    private static final String ENDPOINT = "";
-    private static final String UUID_OWNER = "";
-    private static final String TOKEN_OWNER = "";
+    private static final String ENDPOINT = "http://172.26.67.70:3000";
+    private static final String UUID_OWNER = "197b5876-7c5c-4c6e-8895-af17a5870000";
+    private static final String TOKEN_OWNER = "f1788ed09e646d2cd1aef1a9582632d9e0034fff";
 
 
     private static final Object lock = new Object();
 
+    /**
+     * Class used to access the db repository
+     */
     private FacadeDatabase mDrinkFountainDB;
 
+    /**
+     * Class used to access knot LIB
+     */
     public FacadeConnection mKnotApi;
 
+    /**
+     * Only Instance
+     */
     private static KnotHttpCommunication sInstance;
 
 
@@ -78,10 +87,8 @@ public class KnotHttpCommunication implements KnotCommunication {
             @Override
             public void onEventFinish(List<DrinkFountainDevice> deviceList) {
 
-                if(deviceList!=null){
-                    for (DrinkFountainDevice drinkFountainDevice:deviceList) {
-                        mDrinkFountainDB.insertDrinkFountain(drinkFountainDevice);
-                    }
+                if (deviceList != null) {
+                    mDrinkFountainDB.insertDrinkFountainList(deviceList);
                 }
             }
 
@@ -93,21 +100,20 @@ public class KnotHttpCommunication implements KnotCommunication {
     }
 
     @Override
-    public void getDataByDevice(String deviceUuid) {
+    public void getDataByDevice() {
 
-        List<WaterLevelData> mWaterLevelDatas = new ArrayList<>();
+        List<WaterLevelData> mWaterLevelData = new ArrayList<>();
 
-
+        // get devices;
         List<DrinkFountainDevice> mDrinkFountainDeviceList = mDrinkFountainDB.getAllDrinkFountain();
 
-        for ( final DrinkFountainDevice drinkFountainDevice: mDrinkFountainDeviceList) {
+        for (final DrinkFountainDevice drinkFountainDevice : mDrinkFountainDeviceList) {
 
-            mKnotApi.httpGetDataList(drinkFountainDevice.getUuid(), mWaterLevelDatas, new Event<List<WaterLevelData>>() {
+            mKnotApi.httpGetDataList(UUID_OWNER, mWaterLevelData, new Event<List<WaterLevelData>>() {
                 @Override
-                public void onEventFinish(List<WaterLevelData> object) {
-
-                    //Save the list of data at the repository
-                    //Todo - Call db;
+                public void onEventFinish(List<WaterLevelData> list) {
+                    // insert all WaterLevelData in the DB ;
+                    mDrinkFountainDB.insertWalterLevelDataList(list);
                 }
 
                 @Override
@@ -117,7 +123,6 @@ public class KnotHttpCommunication implements KnotCommunication {
             });
 
         }
-
 
 
     }

@@ -10,11 +10,11 @@
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,9 @@ import br.org.cesar.knot.lib.event.Event;
 import br.org.cesar.knot.lib.exception.InvalidParametersException;
 import br.org.cesar.knot.lib.exception.KnotException;
 import br.org.cesar.knot.lib.exception.SocketNotConnected;
+import br.org.cesar.knot.lib.model.KnotQueryDateData;
 import br.org.cesar.knot.lib.model.ThingList;
+import br.org.cesar.knot.lib.util.DateUtils;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
@@ -35,19 +37,27 @@ import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
 public class KnotSocketIOCommunication implements KnotCommunication {
 
-    private static final String ENDPOINT = "http://192.168.0.109:3000";
-    private static final String UUID_OWNER = "542c3564-360f-4173-8b7e-e165670d0000";
-    private static final String TOKEN_OWNER = "1042db5745b7800404a813407022e886322f89d8";
+    private static final String ENDPOINT = "http://172.17.120.174:3000";
+    private static final String UUID_OWNER = "197b5876-7c5c-4c6e-8895-af17a5870000";
+    private static final String TOKEN_OWNER = "f1788ed09e646d2cd1aef1a9582632d9e0034fff";
 
     private static final String OWNER = "owner";
 
-
     private static final Object lock = new Object();
 
+    /**
+     * Class used to access the db repository
+     */
     private FacadeDatabase mDrinkFountainDB;
 
+    /**
+     * Class used to access knot LIB
+     */
     public FacadeConnection mKnotApi;
 
+    /**
+     * Only Instance
+     */
     private static KnotSocketIOCommunication sInstance;
 
 
@@ -65,7 +75,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
             socketNotConnected.printStackTrace();
         }
 
-        //Initializing the DATABASE to save app informations
+        //Initializing the DATABASE to save app information
         mDrinkFountainDB = FacadeDatabase.getInstance();
     }
 
@@ -83,19 +93,13 @@ public class KnotSocketIOCommunication implements KnotCommunication {
         }
     }
 
-    public void authenticateSocketCommunication() {
+    /**
+     * Authenticating the socket communication
+     * @param callbackResult Callback that will receive the result
+     */
+    public void authenticateSocketCommunication(Event<Boolean> callbackResult) {
         try {
-            mKnotApi.socketIOAuthenticateDevice(new Event<Boolean>() {
-                @Override
-                public void onEventFinish(Boolean object) {
-                    getAllDevices();
-                }
-
-                @Override
-                public void onEventError(Exception e) {
-                    LogKnotDrinkFountain.printE(e);
-                }
-            });
+            mKnotApi.socketIOAuthenticateDevice(callbackResult);
         } catch (SocketNotConnected socketNotConnected) {
             LogKnotDrinkFountain.printE(socketNotConnected);
         } catch (InvalidParametersException e) {
@@ -103,24 +107,22 @@ public class KnotSocketIOCommunication implements KnotCommunication {
         }
     }
 
-
     @Override
     public void getAllDevices() {
         List<DrinkFountainDevice> mDrinkFountainDeviceList = new ArrayList<>();
-        JSONObject js = new JSONObject();
+        JSONObject query = new JSONObject();
         try {
-            js.put(OWNER, UUID_OWNER);
+            query.put(OWNER, UUID_OWNER);
         } catch (JSONException e) {
             LogKnotDrinkFountain.printE(e);
         }
 
-
         try {
-            mKnotApi.socketIOGetDeviceList(mDrinkFountainDeviceList, js, new Event<List<DrinkFountainDevice>>() {
+            mKnotApi.socketIOGetDeviceList(mDrinkFountainDeviceList, query, new Event<List<DrinkFountainDevice>>() {
 
                 @Override
-                public void onEventFinish(List<DrinkFountainDevice> object) {
-                    //TODO - Call insertAllDevices;
+                public void onEventFinish(List<DrinkFountainDevice> deviceList) {
+                    mDrinkFountainDB.insertDrinkFountainList(deviceList);
                 }
 
                 @Override
@@ -138,16 +140,61 @@ public class KnotSocketIOCommunication implements KnotCommunication {
     }
 
     @Override
-    public void getDataByDevice(String deviceUuid) {
+    public void getDataByDevice() {
 
-        List<WaterLevelData> mWaterLevelDatas = new ArrayList<>();
+        ThingList<WaterLevelData> waterLevelDataList = new ThingList<>(WaterLevelData.class);
 
 
+        // get devices;
         List<DrinkFountainDevice> mDrinkFountainDeviceList = mDrinkFountainDB.getAllDrinkFountain();
 
         for (final DrinkFountainDevice drinkFountainDevice : mDrinkFountainDeviceList) {
 
-            mDrinkFountainDB.getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
+            // get the last valid waterLevelData to build the query
+            WaterLevelData waterLevelData = mDrinkFountainDB.getCurrentLevelByDeviceUUID(UUID_OWNER);
+
+            KnotQueryDateData knotQueryDateDataStart = null;
+            KnotQueryDateData knotQueryDateDataFinish = null;
+
+
+            //Verify if the waterLevelData is valid
+            if (waterLevelData != null) {
+                String timeStamp = waterLevelData.getTimestamp();
+
+                try {
+                    //Building the start date
+                    knotQueryDateDataStart = DateUtils.getKnotQueryDateData(timeStamp);
+                } catch (ParseException e) {
+                    LogKnotDrinkFountain.printE(e);
+                }
+
+            } else {
+
+                try {
+                    //get the current hour of the system
+                    knotQueryDateDataFinish = DateUtils.getCurretnKnotQueryDateData();
+
+                    mKnotApi.socketIOGetData(waterLevelDataList, UUID_OWNER, TOKEN_OWNER, knotQueryDateDataStart, knotQueryDateDataFinish, new Event<List<WaterLevelData>>() {
+                        @Override
+                        public void onEventFinish(List<WaterLevelData> list) {
+                            mDrinkFountainDB.insertWalterLevelDataList(list);
+                        }
+
+                        @Override
+                        public void onEventError(Exception e) {
+                            LogKnotDrinkFountain.printE(e);
+                        }
+                    });
+                } catch (ParseException e) {
+                    LogKnotDrinkFountain.printE(e);
+                } catch (InvalidParametersException e) {
+                    LogKnotDrinkFountain.printE(e);
+                } catch (SocketNotConnected socketNotConnected) {
+                    LogKnotDrinkFountain.printE(socketNotConnected);
+                }
+
+
+            }
 
         }
 
