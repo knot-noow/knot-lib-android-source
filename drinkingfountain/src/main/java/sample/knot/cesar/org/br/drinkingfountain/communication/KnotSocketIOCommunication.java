@@ -23,8 +23,8 @@ import br.org.cesar.knot.lib.event.Event;
 import br.org.cesar.knot.lib.exception.InvalidParametersException;
 import br.org.cesar.knot.lib.exception.KnotException;
 import br.org.cesar.knot.lib.exception.SocketNotConnected;
+import br.org.cesar.knot.lib.model.KnotList;
 import br.org.cesar.knot.lib.model.KnotQueryDateData;
-import br.org.cesar.knot.lib.model.ThingList;
 import br.org.cesar.knot.lib.util.DateUtils;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
@@ -109,7 +109,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
 
     @Override
     public void getAllDevices() {
-        List<DrinkFountainDevice> mDrinkFountainDeviceList = new ArrayList<>();
+        KnotList<DrinkFountainDevice> mDrinkFountainDeviceList = new KnotList<>(DrinkFountainDevice.class);
         JSONObject query = new JSONObject();
         try {
             query.put(OWNER, UUID_OWNER);
@@ -142,7 +142,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
     @Override
     public void getDataByDevice() {
 
-        ThingList<WaterLevelData> waterLevelDataList = new ThingList<>(WaterLevelData.class);
+        KnotList<WaterLevelData> waterLevelDataList = new KnotList<>(WaterLevelData.class);
 
 
         // get devices;

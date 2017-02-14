@@ -11,11 +11,11 @@ package sample.knot.cesar.org.br.drinkingfountain.communication;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.org.cesar.knot.lib.connection.FacadeConnection;
 import br.org.cesar.knot.lib.event.Event;
+import br.org.cesar.knot.lib.model.KnotList;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
@@ -81,7 +81,7 @@ public class KnotHttpCommunication implements KnotCommunication {
 
     @Override
     public void getAllDevices() {
-        List<DrinkFountainDevice> mDrinkFountainDeviceList = new ArrayList<>();
+        KnotList<DrinkFountainDevice> mDrinkFountainDeviceList = new KnotList<>(DrinkFountainDevice.class);
 
         mKnotApi.httpGetDeviceList(mDrinkFountainDeviceList, new Event<List<DrinkFountainDevice>>() {
             @Override
@@ -102,7 +102,7 @@ public class KnotHttpCommunication implements KnotCommunication {
     @Override
     public void getDataByDevice() {
 
-        List<WaterLevelData> mWaterLevelData = new ArrayList<>();
+        KnotList<WaterLevelData> mWaterLevelData = new KnotList<>(WaterLevelData.class);
 
         // get devices;
         List<DrinkFountainDevice> mDrinkFountainDeviceList = mDrinkFountainDB.getAllDrinkFountain();
