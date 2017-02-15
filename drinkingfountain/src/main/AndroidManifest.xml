@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.GraphicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,11 @@
             </intent-filter>
         </activity>
 
-	    <activity android:name=".ui.MapActivity"></activity>
+	    <activity android:name=".ui.MapActivity"
+            android:exported="false"/>
+
+        <activity android:name=".ui.MainActivity"
+            android:exported="false"/>
 
         <!-- Service used to sync all data -->
         <service
