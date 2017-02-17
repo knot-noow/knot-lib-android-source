@@ -152,7 +152,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
         for (final DrinkFountainDevice drinkFountainDevice : mDrinkFountainDeviceList) {
 
             // get the last valid waterLevelData to build the query
-            WaterLevelData waterLevelData = mDrinkFountainDB.getCurrentLevelByDeviceUUID(UUID_OWNER);
+            WaterLevelData waterLevelData = mDrinkFountainDB.getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
             KnotQueryDateData knotQueryDateDataStart = null;
             KnotQueryDateData knotQueryDateDataFinish = null;
