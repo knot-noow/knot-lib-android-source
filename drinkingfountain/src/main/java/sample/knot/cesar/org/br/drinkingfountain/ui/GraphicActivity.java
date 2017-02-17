@@ -30,7 +30,7 @@ public class GraphicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graphic_activity);
 
-       // initFragment(savedInstanceState);
+        initFragment(savedInstanceState);
     }
 
     private void initFragment(@Nullable Bundle savedInstanceState) {
