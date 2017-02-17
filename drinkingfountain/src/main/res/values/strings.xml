@@ -10,4 +10,10 @@
 
 <resources>
     <string name="app_name">DrinkingFountain</string>
+
+    <!-- HomeScreen -->
+    <string name="title_drinking_fountain">Bebedouros</string>
+    <string name="title_map">Mapa</string>
+    <string name="menu_about">Sobre</string>
+
 </resources>
