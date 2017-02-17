@@ -2,10 +2,10 @@
 CREATE TABLE IF NOT EXISTS tb_drink_fountain (
     _id          		    INTEGER         PRIMARY KEY AUTOINCREMENT,
     uuid         		    VARCHAR( 200 )  NOT NULL,
-    token       		    VARCHAR( 200 )  NOT NULL,
+    token       		    VARCHAR( 200 ),
     position_x	    		INTEGER DEFAULT 0,
     position_y          	INTEGER DEFAULT 0,
-    description             VARCHAR( 200 ) NOT NULL
+    description             VARCHAR( 200 )
 );
 
 CREATE TABLE IF NOT EXISTS tb_water_level_data(
