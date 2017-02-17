@@ -16,6 +16,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
+        <!-- color of toolbar -->
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <!-- menu dots color-->
+        <item name="android:textColorSecondary">@color/secondary_color</item>
     </style>
 
 </resources>

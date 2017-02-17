@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "sample.knot.cesar.org.br.drinkingfountain"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -37,7 +37,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    // ui
+    compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
+    // test
     testCompile 'junit:junit:4.12'
+    // knot
     compile project(path: ':androidlibrary')
 }
