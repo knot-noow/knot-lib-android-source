@@ -11,11 +11,15 @@ package sample.knot.cesar.org.br.drinkingfountain.communication;
 
 import android.content.Context;
 
+import java.text.ParseException;
 import java.util.List;
 
 import br.org.cesar.knot.lib.connection.FacadeConnection;
 import br.org.cesar.knot.lib.event.Event;
 import br.org.cesar.knot.lib.model.KnotList;
+import br.org.cesar.knot.lib.model.KnotQueryData;
+import br.org.cesar.knot.lib.model.KnotQueryDateData;
+import br.org.cesar.knot.lib.util.DateUtils;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
@@ -53,14 +57,14 @@ public class KnotHttpCommunication implements KnotCommunication {
     /**
      * Private constructor
      */
-    private KnotHttpCommunication(Context context) {
+    private KnotHttpCommunication() {
         //Initializing the KNOT API
         mKnotApi = FacadeConnection.getInstance();
 
         // Configuring the API
         mKnotApi.setupHttp(ENDPOINT, UUID_OWNER, TOKEN_OWNER);
 
-        //Initializing the DATABASE to save app informations
+        //Initializing the DATABASE to save app information
         mDrinkFountainDB = FacadeDatabase.getInstance();
     }
 
@@ -69,15 +73,14 @@ public class KnotHttpCommunication implements KnotCommunication {
      *
      * @return the instance
      */
-    public static KnotHttpCommunication getInstance(Context context) {
+    public static KnotHttpCommunication getInstance() {
         synchronized (lock) {
             if (sInstance == null) {
-                sInstance = new KnotHttpCommunication(context);
+                sInstance = new KnotHttpCommunication();
             }
             return sInstance;
         }
     }
-
 
     @Override
     public void getAllDevices() {
@@ -109,18 +112,49 @@ public class KnotHttpCommunication implements KnotCommunication {
 
         for (final DrinkFountainDevice drinkFountainDevice : mDrinkFountainDeviceList) {
 
-            mKnotApi.httpGetDataList(UUID_OWNER, mWaterLevelData, new Event<List<WaterLevelData>>() {
-                @Override
-                public void onEventFinish(List<WaterLevelData> list) {
-                    // insert all WaterLevelData in the DB ;
-                    mDrinkFountainDB.insertWalterLevelDataList(list);
-                }
+            // get the last valid waterLevelData to build the query
+            WaterLevelData waterLevelData = mDrinkFountainDB.getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
-                @Override
-                public void onEventError(Exception e) {
+            KnotQueryDateData knotQueryDateDataStart = null;
+            KnotQueryDateData knotQueryDateDataFinish = null;
+
+            //Verify if the waterLevelData is valid
+            if (waterLevelData != null) {
+                String timeStamp = waterLevelData.getTimestamp();
+
+                try {
+                    //Building the start date
+                    knotQueryDateDataStart = DateUtils.getKnotQueryDateData(timeStamp);
+                } catch (ParseException e) {
                     LogKnotDrinkFountain.printE(e);
                 }
-            });
+
+            }
+
+            //get the current hour of the system
+            try {
+                knotQueryDateDataFinish = DateUtils.getCurrentKnotQueryDateData();
+
+                KnotQueryData knotQueryData = new KnotQueryData();
+                knotQueryData.setFinishDate(knotQueryDateDataFinish).
+                        setStartDate(knotQueryDateDataStart);
+
+                mKnotApi.httpGetDataList(drinkFountainDevice.getUuid(), knotQueryData, mWaterLevelData, new Event<List<WaterLevelData>>() {
+                    @Override
+                    public void onEventFinish(List<WaterLevelData> list) {
+                        // insert all WaterLevelData in the DB ;
+                        mDrinkFountainDB.insertWalterLevelDataList(list);
+                    }
+
+                    @Override
+                    public void onEventError(Exception e) {
+                        LogKnotDrinkFountain.printE(e);
+                    }
+                });
+            } catch (ParseException e) {
+                LogKnotDrinkFountain.printE(e);
+            }
+
 
         }
 
