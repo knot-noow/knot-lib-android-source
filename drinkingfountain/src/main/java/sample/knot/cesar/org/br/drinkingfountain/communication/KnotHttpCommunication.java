@@ -25,10 +25,6 @@ import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
-/**
- * Created by usuario on 11/02/17.
- */
-
 public class KnotHttpCommunication implements KnotCommunication {
 
     private static final String ENDPOINT = "http://172.26.67.70:3000";
