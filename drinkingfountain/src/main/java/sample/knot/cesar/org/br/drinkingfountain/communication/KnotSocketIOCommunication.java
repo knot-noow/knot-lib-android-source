@@ -9,13 +9,10 @@
  */
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
-import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.org.cesar.knot.lib.connection.FacadeConnection;
@@ -32,9 +29,6 @@ import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
-/**
- * Created by usuario on 11/02/17.
- */
 
 public class KnotSocketIOCommunication implements KnotCommunication {
 
@@ -96,6 +90,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
 
     /**
      * Authenticating the socket communication
+     *
      * @param callbackResult Callback that will receive the result
      */
     public void authenticateSocketCommunication(Event<Boolean> callbackResult) {
