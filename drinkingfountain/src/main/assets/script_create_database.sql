@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS tb_drink_fountain (
     token       		    VARCHAR( 200 ),
     position_x	    		INTEGER DEFAULT 0,
     position_y          	INTEGER DEFAULT 0,
-    description             VARCHAR( 200 )
+    description             VARCHAR( 200 ),
+    floor                 	INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS tb_water_level_data(

@@ -20,7 +20,7 @@ public class DrinkFountainDevice extends AbstractThingDevice {
     public static final long ATTENTION = 10;
 
     private String description;
-    private int positionX, positionY;
+    private int positionX, positionY, floor;
 
 
     public DrinkFountainDevice(){
@@ -29,7 +29,7 @@ public class DrinkFountainDevice extends AbstractThingDevice {
     @Override
     public String toString() {
         String value = super.toString() + " Description = " + getDescription() +
-                " PositionX = " + getPositionX() + " PositionY = " + getPositionY();
+                " PositionX = " + getPositionX() + " PositionY = " + getPositionY()+ " Floor = "+getFloor();
         return value;
     }
 
@@ -78,6 +78,14 @@ public class DrinkFountainDevice extends AbstractThingDevice {
         this.positionX = positionX;
     }
 
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
     public static class Columns implements BaseColumns {
 
         /**
@@ -115,5 +123,12 @@ public class DrinkFountainDevice extends AbstractThingDevice {
          *
          * */
         public static final String COLUMN_DESCRIPTION = "description";
+
+        /**
+         * Floor of drink walter is placed
+         *
+         * */
+        public static final String COLUMN_FLOOR= "floor";
+
     }
 }

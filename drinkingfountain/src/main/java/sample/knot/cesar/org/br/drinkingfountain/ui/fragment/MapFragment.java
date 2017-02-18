@@ -21,7 +21,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
