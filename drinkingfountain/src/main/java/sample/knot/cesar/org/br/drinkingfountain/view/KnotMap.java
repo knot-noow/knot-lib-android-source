@@ -27,7 +27,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 
 
 public class KnotMap extends FrameLayout {
@@ -105,8 +105,7 @@ public class KnotMap extends FrameLayout {
      * @param mWaterBottleList the list of items
      * @param context          the context of the application
      */
-    public void fillMapWithWaterBottle(int mapResource, @NonNull List<WaterBottle> mWaterBottleList, Context context) {
-
+    public void fillMapWithWaterBottle(int mapResource, @NonNull List<DrinkFountainDevice> mWaterBottleList, Context context) {
 
         mMap.setBackgroundResource(mapResource);
 
@@ -124,7 +123,7 @@ public class KnotMap extends FrameLayout {
      * @param waterBottle
      * @return
      */
-    private WaterBottleMap waterBottleComponent(Context context, WaterBottle waterBottle) {
+    private WaterBottleMap waterBottleComponent(Context context, DrinkFountainDevice waterBottle) {
         WaterBottleMap waterBottleMap = new WaterBottleMap(context);
 
         LayoutParams params = new LayoutParams(mMap.getLayoutParams());
@@ -133,8 +132,8 @@ public class KnotMap extends FrameLayout {
         params.width = ITEM_SIZE;
 
         //Set x and y of the map
-        params.topMargin = waterBottle.getMapPositionY() - ITEM_SIZE / HALF;
-        params.leftMargin = waterBottle.getMapPositionX() - ITEM_SIZE / HALF;
+        params.topMargin = waterBottle.getPositionX() - ITEM_SIZE / HALF;
+        params.leftMargin = waterBottle.getPositionY() - ITEM_SIZE / HALF;
 
         waterBottleMap.setLayoutParams(params);
 

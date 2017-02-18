@@ -16,6 +16,9 @@ import br.org.cesar.knot.lib.model.AbstractThingDevice;
 
 public class DrinkFountainDevice extends AbstractThingDevice {
 
+    public static final long DANGEROUS = 6;
+    public static final long ATTENTION = 10;
+
     private String description;
     private int positionX, positionY;
 

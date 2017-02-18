@@ -24,7 +24,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
+import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 
 
 public class WaterBottleMap extends FrameLayout {
@@ -105,16 +107,24 @@ public class WaterBottleMap extends FrameLayout {
      *
      * @param water The object
      */
-    public void setWaterBottle(@NonNull WaterBottle water) {
+    public void setWaterBottle(@NonNull DrinkFountainDevice water) {
+        float waterLevel = 0;
+
         WaterbottleView bottle = (WaterbottleView) mFrameLayout.findViewById(R.id.water_bottle_map);
-        bottle.setWaterHeight(water.mlevelOfWater);
+        WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(water.getUuid());
+
+        if(waterLevelData!=null){
+            waterLevel = waterLevelData.getCurrentValue();
+        }
+
+        bottle.setWaterHeight(waterLevel);
 
         GradientDrawable backgroundGradient = (GradientDrawable) view.getBackground();
 
 
-        if (water.mlevelOfWater < WaterBottle.DANGEROUS) {
+        if (waterLevel < water.DANGEROUS) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.RED);
-        } else if (water.mlevelOfWater < WaterBottle.ATTENTION) {
+        } else if (waterLevelData.getCurrentValue() < water.ATTENTION) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.YELLOW);
         } else {
             backgroundGradient.setStroke(STROKE_SIZE, Color.BLUE);
