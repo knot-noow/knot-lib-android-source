@@ -27,10 +27,9 @@ import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 
 public class KnotHttpCommunication implements KnotCommunication {
 
-    private static final String ENDPOINT = "http://172.26.67.70:3000";
+    private static final String ENDPOINT = "http://192.168.1.10:3000";
     private static final String UUID_OWNER = "197b5876-7c5c-4c6e-8895-af17a5870000";
     private static final String TOKEN_OWNER = "f1788ed09e646d2cd1aef1a9582632d9e0034fff";
-
 
     private static final Object lock = new Object();
 
