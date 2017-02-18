@@ -13,11 +13,9 @@ package sample.knot.cesar.org.br.drinkingfountain.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -137,11 +135,22 @@ public class KnotMap extends FrameLayout {
 
         waterBottleMap.setLayoutParams(params);
 
-        waterBottleMap.setWaterBottle(waterBottle);
+        waterBottleMap.setDrinkFountainDevice(waterBottle);
 
         return waterBottleMap;
     }
 
+    public void setOnDrinkFountainListener(@NonNull OnDrinkFountainListener listener){
+        for (int i = 0; i < mMap.getChildCount(); i++) {
+            View view  = mMap.getChildAt(i);
+
+            if(view instanceof WaterBottleMap){
+                ((WaterBottleMap)view).setOnDrinkFountainListener(listener);
+            }
+
+        }
+
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -272,6 +281,13 @@ public class KnotMap extends FrameLayout {
 
         return result;
 
+    }
+
+    /**
+     * Listener to notify when a DrinkFountain will be clicked
+     */
+    public interface OnDrinkFountainListener {
+       public void onDrinkFountainClicked(String Uuid);
     }
 
 }

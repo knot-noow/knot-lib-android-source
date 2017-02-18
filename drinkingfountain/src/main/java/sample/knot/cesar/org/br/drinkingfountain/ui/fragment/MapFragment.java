@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.util.Stub;
 import sample.knot.cesar.org.br.drinkingfountain.view.KnotMap;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements KnotMap.OnDrinkFountainListener{
 
     private Button mBtnChangeFloor;
     private KnotMap mKnotMapFirstFloor, mKnotMapSecondFloor;
@@ -110,7 +111,16 @@ public class MapFragment extends Fragment {
         mKnotMapFirstFloor = (KnotMap) view.findViewById(R.id.map_first_floor);
         mKnotMapSecondFloor = (KnotMap) view.findViewById(R.id.map_second_floor);
 
+
         mKnotMapSecondFloor.fillMapWithWaterBottle(R.drawable.tir_second_floor, drinkFountainDevices, getActivity());
         mKnotMapFirstFloor.fillMapWithWaterBottle(R.drawable.tir_first_floor, drinkFountainDevices, getActivity());
+
+        mKnotMapFirstFloor.setOnDrinkFountainListener(this);
+        mKnotMapSecondFloor.setOnDrinkFountainListener(this);
+    }
+
+    @Override
+    public void onDrinkFountainClicked(String uuid) {
+        Toast.makeText(getContext(), "The uuid ("+uuid+") was clicked", Toast.LENGTH_SHORT).show();
     }
 }

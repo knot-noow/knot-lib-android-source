@@ -46,6 +46,21 @@ public class WaterBottleMap extends FrameLayout {
     private View view;
     private FrameLayout mFrameLayout;
 
+    private KnotMap.OnDrinkFountainListener mDrinkFountainListener;
+
+    private DrinkFountainDevice mdrDrinkFountainDevice;
+
+
+    OnClickListener mClicked = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mDrinkFountainListener!=null && mdrDrinkFountainDevice!=null){
+                mDrinkFountainListener.onDrinkFountainClicked(mdrDrinkFountainDevice.getUuid());
+            }
+        }
+    };
+
+
     public WaterBottleMap(@NonNull Context context) {
         super(context);
         initView(context);
@@ -78,6 +93,8 @@ public class WaterBottleMap extends FrameLayout {
         setAnimation();
 
         setClipChildren(false);
+
+        mFrameLayout.setOnClickListener(mClicked);
     }
 
     /**
@@ -105,13 +122,15 @@ public class WaterBottleMap extends FrameLayout {
     /**
      * This method is used to change the color of the WaterbottleView
      *
-     * @param water The object
+     * @param drinkFountainDevice The object
      */
-    public void setWaterBottle(@NonNull DrinkFountainDevice water) {
+    public void setDrinkFountainDevice(@NonNull DrinkFountainDevice drinkFountainDevice) {
+
+        mdrDrinkFountainDevice = drinkFountainDevice;
         float waterLevel = 0;
 
         WaterbottleView bottle = (WaterbottleView) mFrameLayout.findViewById(R.id.water_bottle_map);
-        WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(water.getUuid());
+        WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
         if(waterLevelData!=null){
             waterLevel = waterLevelData.getCurrentValue();
@@ -122,14 +141,18 @@ public class WaterBottleMap extends FrameLayout {
         GradientDrawable backgroundGradient = (GradientDrawable) view.getBackground();
 
 
-        if (waterLevel < water.DANGEROUS) {
+        if (waterLevel < drinkFountainDevice.DANGEROUS) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.RED);
-        } else if (waterLevelData.getCurrentValue() < water.ATTENTION) {
+        } else if (waterLevelData.getCurrentValue() < drinkFountainDevice.ATTENTION) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.YELLOW);
         } else {
             backgroundGradient.setStroke(STROKE_SIZE, Color.BLUE);
         }
 
+    }
+
+    public void setOnDrinkFountainListener(@NonNull KnotMap.OnDrinkFountainListener listener){
+        mDrinkFountainListener = listener;
     }
 
 }
