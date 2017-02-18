@@ -23,7 +23,9 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
+import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.util.Stub;
 import sample.knot.cesar.org.br.drinkingfountain.view.KnotMap;
 
 public class MapFragment extends Fragment {
@@ -62,6 +64,9 @@ public class MapFragment extends Fragment {
         });
 
         tempMockItems(view);
+
+        Stub s = new Stub();
+        s.executeStub(12, 36);
     }
 
     /**

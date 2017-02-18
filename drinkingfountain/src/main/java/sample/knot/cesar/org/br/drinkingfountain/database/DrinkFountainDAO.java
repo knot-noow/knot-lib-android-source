@@ -178,6 +178,10 @@ class DrinkFountainDAO {
             if (drinkFountainDevice.getDescription() != null) {
                 contentValues.put(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION, drinkFountainDevice.getDescription());
             }
+
+            if (drinkFountainDevice.getFloor() > INVALID_POSITION) {
+                contentValues.put(DrinkFountainDevice.Columns.COLUMN_FLOOR, drinkFountainDevice.getFloor());
+            }
         }
         return contentValues;
     }
@@ -200,12 +204,14 @@ class DrinkFountainDAO {
             int indexPositionX = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_X);
             int indexPositionY = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_Y);
             int indexDescription = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION);
+            int indexFloor = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_FLOOR);
 
             drinkFountainDevice.setUuid(drinkCursor.getString(indexUUID));
             drinkFountainDevice.setToken(drinkCursor.getString(indexToken));
             drinkFountainDevice.setPositionX(drinkCursor.getInt(indexPositionX));
             drinkFountainDevice.setPositionY(drinkCursor.getInt(indexPositionY));
             drinkFountainDevice.setDescription(drinkCursor.getString(indexDescription));
+            drinkFountainDevice.setFloor(drinkCursor.getInt(indexFloor));
 
         }
         return drinkFountainDevice;
