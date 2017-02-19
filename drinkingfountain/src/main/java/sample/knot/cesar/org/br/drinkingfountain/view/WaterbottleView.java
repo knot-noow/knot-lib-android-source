@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 
 public class WaterbottleView extends LinearLayout {
 
@@ -32,7 +32,7 @@ public class WaterbottleView extends LinearLayout {
     private final static String TEXT_PERCENT = "%";
 
 
-    private long mPosition = -1;
+    private float mPosition = -1;
     private View view;
     private TextView mLevelInformation;
 
@@ -74,7 +74,7 @@ public class WaterbottleView extends LinearLayout {
      *
      * @param level Level of the water in the water bottle
      */
-    public void setWaterHeight(long level) {
+    public void setWaterHeight(float level) {
         this.mPosition = level;
     }
 
@@ -83,9 +83,9 @@ public class WaterbottleView extends LinearLayout {
      *
      * @param percent
      */
-    private void calcHightOfWater(long percent) {
+    private void calcHightOfWater(float percent) {
         long height = getHeight();
-        long position = (height * percent) / CALCULATE_FACTOR;
+        long position = (long)(height * percent) / CALCULATE_FACTOR;
         long positionY = getHeight() - position;
 
         mWaterView.animate().y(positionY);
@@ -93,9 +93,9 @@ public class WaterbottleView extends LinearLayout {
 
         mLevelInformation.setText(this.mPosition + TEXT_PERCENT);
 
-        if (percent < WaterBottle.DANGEROUS) {
+        if (percent < DrinkFountainDevice.DANGEROUS) {
             mLevelInformation.setTextColor(Color.RED);
-        } else if (percent < WaterBottle.ATTENTION) {
+        } else if (percent < DrinkFountainDevice.ATTENTION) {
             mLevelInformation.setTextColor(Color.YELLOW);
         } else {
             mLevelInformation.setTextColor(Color.WHITE);

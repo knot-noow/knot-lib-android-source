@@ -106,12 +106,12 @@ public class Stub {
         return knotQueryDateData;
     }
 
-    private int getX(){
+    private int getY(){
         return ThreadLocalRandom.current().nextInt(100, 2300);
     }
 
 
-    private int getY(){
+    private int getX(){
         return ThreadLocalRandom.current().nextInt(100, 700);
     }
 
