@@ -52,6 +52,8 @@ public class PreferenceUtil {
             }
             return sInstance;
         }
+
+        
     }
 
     /**
@@ -103,12 +105,12 @@ public class PreferenceUtil {
     }
 
     /**
-     * Gets cloud end point.
+     * Gets owner token.
      *
-     * @return the cloud end point value
+     * @return the owner token
      */
     public String getTonken() {
-        return getPref().getString(KEY_END_POINT, Util.EMPTY_STRING);
+        return getPref().getString(KEY_TOKEN, Util.EMPTY_STRING);
     }
 
     /**

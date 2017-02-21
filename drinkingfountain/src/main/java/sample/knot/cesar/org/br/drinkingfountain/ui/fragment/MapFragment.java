@@ -102,8 +102,8 @@ public class MapFragment extends Fragment implements KnotMap.OnDrinkFountainList
     private void tempMockItems(@NonNull View view) {
 
     //TODO - use this block of code to test with data
-//        Stub stub = new Stub();
-//        stub.executeStub(6,10);
+        Stub stub = new Stub();
+        stub.executeStub(6,10);
 
         List<DrinkFountainDevice> drinkFountainDevices = FacadeDatabase.getInstance().getAllDrinkFountain();
 

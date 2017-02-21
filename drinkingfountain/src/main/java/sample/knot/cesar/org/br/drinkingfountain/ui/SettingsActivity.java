@@ -38,6 +38,11 @@ public class SettingsActivity extends Activity {
         mBtnSave = (Button) findViewById(R.id.btn_save);
         mRootLayout = (CoordinatorLayout) findViewById(R.id.rootCoordinatorLayout);
 
+
+        mEdtEndPoint.setText(PreferenceUtil.getInstance().getEndPoint());
+        mEdtUUID.setText(PreferenceUtil.getInstance().getUuid());
+        mEdtToken.setText(PreferenceUtil.getInstance().getTonken());
+
         mBtnSave.setOnClickListener(saveListener);
     }
 
@@ -50,7 +55,7 @@ public class SettingsActivity extends Activity {
                 startActivity(homeActivity);
                 finish();
             } else {
-                Snackbar.make(mRootLayout, "Todos os campos devem ser preenchido", Snackbar.LENGTH_LONG);
+                Snackbar.make(mRootLayout, "Todos os campos devem ser preenchido", Snackbar.LENGTH_LONG).show();
             }
         }
     };
@@ -62,8 +67,11 @@ public class SettingsActivity extends Activity {
     }
 
     private boolean iSCanSave() {
-        return mEdtEndPoint != null &&  !mEdtEndPoint.getText().equals(Util.EMPTY_STRING)  &&
-                mEdtUUID != null && !mEdtUUID.equals(Util.EMPTY_STRING) &&
-                mEdtToken != null && mEdtToken.equals(Util.EMPTY_STRING);
+        Log.i("DJACA", "Primeira expressão: "+ (mEdtEndPoint != null &&  !mEdtEndPoint.getText().toString().equals(Util.EMPTY_STRING) ));
+        Log.i("DJACA", "Segunda  expressão: "+ ( mEdtUUID != null && !mEdtUUID.getText().toString().equals(Util.EMPTY_STRING) ));
+        Log.i("DJACA", "Terceira expressão: "+ ( mEdtToken != null && !mEdtToken.getText().toString().equals(Util.EMPTY_STRING)));
+        return mEdtEndPoint != null &&  !mEdtEndPoint.getText().toString().equals(Util.EMPTY_STRING)  &&
+                mEdtUUID != null && !mEdtUUID.getText().toString().equals(Util.EMPTY_STRING) &&
+                mEdtToken != null && !mEdtToken.getText().toString().equals(Util.EMPTY_STRING);
     }
 }
