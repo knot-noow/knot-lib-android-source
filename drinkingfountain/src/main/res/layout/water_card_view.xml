@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="@dimen/water_card_view_layout_height"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:elevation="3dp">
+        android:layout_margin="@dimen/water_card_view_layout_margin"
+        android:elevation="@dimen/water_card_view_elevation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,8 +24,7 @@
                 android:id="@+id/water_bottle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:transitionName="teste"/>
+                android:layout_weight="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,19 +36,17 @@
                     android:id="@+id/water_card_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Bebedouro 1035"
-                    android:textSize="15dp"
+                    android:layout_margin="@dimen/water_card_view_layout_margin"
+                    android:textSize="@dimen/water_card_view_text_size"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/water_card_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:text="Bebedouro fica na frente da sala lia de itamaraca"
-                    android:textSize="8dp" />
+                    android:layout_marginLeft="@dimen/water_card_view_layout_margin"
+                    android:layout_marginRight="@dimen/water_card_view_layout_margin"
+                    android:textSize="@dimen/water_card_view_subtitle_text_size" />
 
 
             </LinearLayout>
