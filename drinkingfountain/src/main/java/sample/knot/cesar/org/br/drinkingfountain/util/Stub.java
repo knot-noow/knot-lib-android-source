@@ -49,6 +49,12 @@ public class Stub {
         drinkFountainDevice.setPositionY(getY());
         drinkFountainDevice.setDescription("Bebedouro "+number);
 
+        if(number%2 == 0){
+            drinkFountainDevice.setFloor(0);
+        }else{
+            drinkFountainDevice.setFloor(1);
+        }
+
         mDrinkFountainDB.insertDrinkFountain(drinkFountainDevice);
         mTimeInMillis = mDate.getTimeInMillis();
 
