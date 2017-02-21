@@ -29,6 +29,7 @@ public class Util {
     // Sql comments begin with two consecutive "-" characters
     private static final String REG_COMMENT_EXPRESSION = "--";
     private static final String REG_EXPRESSION = ";";
+    public static final String EMPTY_STRING = "";
 
     private static final float COMPLETE_LEVEL_PERCENT = 100;
     private static final float COMPLETE_LEVEL_LITERS = 20;
