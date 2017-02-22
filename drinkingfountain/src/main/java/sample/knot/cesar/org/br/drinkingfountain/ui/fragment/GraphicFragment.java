@@ -121,7 +121,6 @@ public class GraphicFragment extends Fragment {
             final int numColumns = deviceHistory.size();
             final List<Column> columns = new ArrayList<Column>();
             List<SubcolumnValue> values;
-            float currentWaterLevel = 0.0f;
             WaterLevelData buffer;
 
             // add the columns
@@ -172,7 +171,6 @@ public class GraphicFragment extends Fragment {
         final Calendar calendar = Calendar.getInstance();
         float lastCurrentTime = 0.0f;
         int currentTimeSelected;
-        int countAxis = 1;
         AxisValue axisValue;
         String timestampStr;
         String dayStr;
@@ -192,7 +190,6 @@ public class GraphicFragment extends Fragment {
                     axisValues.add(axisValue);
 
                     lastCurrentTime = currentTimeSelected;
-                    countAxis++;
                 }
             }
         }
@@ -213,7 +210,7 @@ public class GraphicFragment extends Fragment {
                 timeStampOrig = Float.parseFloat(waterLevelData.getTimestamp());
                 timeStampRef = Float.parseFloat(t1.getTimestamp());
 
-                // check the datas
+                // check the data
                 if (timeStampOrig > timeStampRef) {
                     return 1;
                 }
@@ -250,7 +247,8 @@ public class GraphicFragment extends Fragment {
 
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            Snackbar.make(getView(), getString(R.string.graphic_use_of_day) + (int) value.getValue() + " ml", Snackbar.LENGTH_SHORT).show();
+            final String waterReceived = getString(R.string.graphic_use_of_day) +" "+ (int) value.getValue() + " l";
+            Snackbar.make(getView(), waterReceived , Snackbar.LENGTH_SHORT).show();
         }
 
         @Override

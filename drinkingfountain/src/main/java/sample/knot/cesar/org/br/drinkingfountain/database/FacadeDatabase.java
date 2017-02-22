@@ -114,6 +114,11 @@ public class FacadeDatabase {
             waterLevelData.setCurrentValue((float) (count * 20));
             mockdata.add(waterLevelData);
         }
+
+        waterLevelData.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        waterLevelData.setCurrentValue(30);
+        mockdata.add(waterLevelData);
+
         return mockdata;
         //return mDrinkFountainDAO.getDeviceHistory(drinkFountainUUID);
     }
