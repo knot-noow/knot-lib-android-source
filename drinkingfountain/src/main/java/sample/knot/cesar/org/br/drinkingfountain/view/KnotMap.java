@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -13,11 +13,9 @@ package sample.knot.cesar.org.br.drinkingfountain.view;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -27,7 +25,7 @@ import android.widget.FrameLayout;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 
 
 public class KnotMap extends FrameLayout {
@@ -105,8 +103,7 @@ public class KnotMap extends FrameLayout {
      * @param mWaterBottleList the list of items
      * @param context          the context of the application
      */
-    public void fillMapWithWaterBottle(int mapResource, @NonNull List<WaterBottle> mWaterBottleList, Context context) {
-
+    public void fillMapWithWaterBottle(int mapResource, @NonNull List<DrinkFountainDevice> mWaterBottleList, Context context) {
 
         mMap.setBackgroundResource(mapResource);
 
@@ -124,7 +121,7 @@ public class KnotMap extends FrameLayout {
      * @param waterBottle
      * @return
      */
-    private WaterBottleMap waterBottleComponent(Context context, WaterBottle waterBottle) {
+    private WaterBottleMap waterBottleComponent(Context context, DrinkFountainDevice waterBottle) {
         WaterBottleMap waterBottleMap = new WaterBottleMap(context);
 
         LayoutParams params = new LayoutParams(mMap.getLayoutParams());
@@ -133,16 +130,27 @@ public class KnotMap extends FrameLayout {
         params.width = ITEM_SIZE;
 
         //Set x and y of the map
-        params.topMargin = waterBottle.getMapPositionY() - ITEM_SIZE / HALF;
-        params.leftMargin = waterBottle.getMapPositionX() - ITEM_SIZE / HALF;
+        params.topMargin = waterBottle.getPositionX() - ITEM_SIZE / HALF;
+        params.leftMargin = waterBottle.getPositionY() - ITEM_SIZE / HALF;
 
         waterBottleMap.setLayoutParams(params);
 
-        waterBottleMap.setWaterBottle(waterBottle);
+        waterBottleMap.setDrinkFountainDevice(waterBottle);
 
         return waterBottleMap;
     }
 
+    public void setOnDrinkFountainListener(@NonNull OnDrinkFountainListener listener){
+        for (int i = 0; i < mMap.getChildCount(); i++) {
+            View view  = mMap.getChildAt(i);
+
+            if(view instanceof WaterBottleMap){
+                ((WaterBottleMap)view).setOnDrinkFountainListener(listener);
+            }
+
+        }
+
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -273,6 +281,13 @@ public class KnotMap extends FrameLayout {
 
         return result;
 
+    }
+
+    /**
+     * Listener to notify when a DrinkFountain will be clicked
+     */
+    public interface OnDrinkFountainListener {
+       public void onDrinkFountainClicked(String Uuid);
     }
 
 }

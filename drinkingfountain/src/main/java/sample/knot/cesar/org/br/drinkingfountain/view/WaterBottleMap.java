@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -24,7 +24,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
-import sample.knot.cesar.org.br.drinkingfountain.model.WaterBottle;
+import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
+import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 
 
 public class WaterBottleMap extends FrameLayout {
@@ -43,6 +45,21 @@ public class WaterBottleMap extends FrameLayout {
 
     private View view;
     private FrameLayout mFrameLayout;
+
+    private KnotMap.OnDrinkFountainListener mDrinkFountainListener;
+
+    private DrinkFountainDevice mdrDrinkFountainDevice;
+
+
+    OnClickListener mClicked = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mDrinkFountainListener!=null && mdrDrinkFountainDevice!=null){
+                mDrinkFountainListener.onDrinkFountainClicked(mdrDrinkFountainDevice.getUuid());
+            }
+        }
+    };
+
 
     public WaterBottleMap(@NonNull Context context) {
         super(context);
@@ -76,6 +93,8 @@ public class WaterBottleMap extends FrameLayout {
         setAnimation();
 
         setClipChildren(false);
+
+        mFrameLayout.setOnClickListener(mClicked);
     }
 
     /**
@@ -103,23 +122,37 @@ public class WaterBottleMap extends FrameLayout {
     /**
      * This method is used to change the color of the WaterbottleView
      *
-     * @param water The object
+     * @param drinkFountainDevice The object
      */
-    public void setWaterBottle(@NonNull WaterBottle water) {
+    public void setDrinkFountainDevice(@NonNull DrinkFountainDevice drinkFountainDevice) {
+
+        mdrDrinkFountainDevice = drinkFountainDevice;
+        float waterLevel = 0;
+
         WaterbottleView bottle = (WaterbottleView) mFrameLayout.findViewById(R.id.water_bottle_map);
-        bottle.setWaterHeight(water.mlevelOfWater);
+        WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
+
+        if(waterLevelData!=null){
+            waterLevel = waterLevelData.getCurrentValue();
+        }
+
+        bottle.setWaterHeight(waterLevel);
 
         GradientDrawable backgroundGradient = (GradientDrawable) view.getBackground();
 
 
-        if (water.mlevelOfWater < WaterBottle.DANGEROUS) {
+        if (waterLevel < drinkFountainDevice.DANGEROUS) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.RED);
-        } else if (water.mlevelOfWater < WaterBottle.ATTENTION) {
+        } else if (waterLevelData.getCurrentValue() < drinkFountainDevice.ATTENTION) {
             backgroundGradient.setStroke(STROKE_SIZE, Color.YELLOW);
         } else {
             backgroundGradient.setStroke(STROKE_SIZE, Color.BLUE);
         }
 
+    }
+
+    public void setOnDrinkFountainListener(@NonNull KnotMap.OnDrinkFountainListener listener){
+        mDrinkFountainListener = listener;
     }
 
 }

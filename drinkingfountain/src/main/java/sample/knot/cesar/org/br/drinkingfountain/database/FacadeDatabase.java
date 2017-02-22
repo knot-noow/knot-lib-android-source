@@ -1,15 +1,19 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
 package sample.knot.cesar.org.br.drinkingfountain.database;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
@@ -26,6 +30,7 @@ public class FacadeDatabase {
 
     /**
      * Create a static instance of facade
+     *
      * @return the facade instance
      */
     public synchronized static FacadeDatabase getInstance() {
@@ -90,11 +95,32 @@ public class FacadeDatabase {
      * @return the list with lasts device history.
      */
     public List<WaterLevelData> getDeviceHistory(String drinkFountainUUID) {
-        return mDrinkFountainDAO.getDeviceHistory(drinkFountainUUID);
+        Calendar calendar = Calendar.getInstance();
+        List<WaterLevelData> mockdata = new ArrayList<>();
+
+        //1
+        WaterLevelData waterLevelData = new WaterLevelData();
+        waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
+        waterLevelData.setCurrentValue(10);
+        mockdata.add(waterLevelData);
+        // mock some data
+        for (int count = 1; count < 20; count++) {
+            waterLevelData = new WaterLevelData();
+            if (count % 5 == 0) {
+                calendar.add(Calendar.DATE, 1);
+            }
+            Log.d("lopes", "date::"+calendar.getTime().toString());
+            waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
+            waterLevelData.setCurrentValue((float) (count * 20));
+            mockdata.add(waterLevelData);
+        }
+        return mockdata;
+        //return mDrinkFountainDAO.getDeviceHistory(drinkFountainUUID);
     }
 
     /**
      * Get a current level value collected of specific device.
+     *
      * @param deviceUUID the uuid of specific device
      * @return the object last collected of the specific device
      */

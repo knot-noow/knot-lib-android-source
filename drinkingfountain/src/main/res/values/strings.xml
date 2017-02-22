@@ -1,13 +1,25 @@
 <!--
+  ~ Copyright (c) 2017, CESAR.
+  ~ All rights reserved.
   ~
-  ~  Copyright (c) 2017, CESAR.
-  ~  All rights reserved.
+  ~ This software may be modified and distributed under the terms
+  ~ of the BSD license. See the LICENSE file for details.
   ~
-  ~  This software may be modified and distributed under the terms
-  ~  of the BSD license. See the LICENSE file for details.
   ~
   -->
 
 <resources>
     <string name="app_name">DrinkingFountain</string>
+
+    <!-- HomeScreen -->
+    <string name="title_drinking_fountain">Bebedouros</string>
+    <string name="title_map">Mapa</string>
+    <string name="menu_about">Sobre</string>
+
+    <!-- GraphicActivity -->
+    <string name="graphic_use">Uso</string>
+    <string name="graphic_liters">Litros</string>
+    <string name="graphic_use_of_day">Uso neste dia: </string>
+
+
 </resources>

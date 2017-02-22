@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -17,9 +17,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import sample.knot.cesar.org.br.drinkingfountain.application.DrinkApplication;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
-import sample.knot.cesar.org.br.drinkingfountain.application.DrinkApplication;
 
 class DrinkFountainDAO {
 
@@ -178,6 +178,10 @@ class DrinkFountainDAO {
             if (drinkFountainDevice.getDescription() != null) {
                 contentValues.put(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION, drinkFountainDevice.getDescription());
             }
+
+            if (drinkFountainDevice.getFloor() > INVALID_POSITION) {
+                contentValues.put(DrinkFountainDevice.Columns.COLUMN_FLOOR, drinkFountainDevice.getFloor());
+            }
         }
         return contentValues;
     }
@@ -200,12 +204,14 @@ class DrinkFountainDAO {
             int indexPositionX = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_X);
             int indexPositionY = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_POSITION_Y);
             int indexDescription = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_DESCRIPTION);
+            int indexFloor = drinkCursor.getColumnIndex(DrinkFountainDevice.Columns.COLUMN_FLOOR);
 
             drinkFountainDevice.setUuid(drinkCursor.getString(indexUUID));
             drinkFountainDevice.setToken(drinkCursor.getString(indexToken));
             drinkFountainDevice.setPositionX(drinkCursor.getInt(indexPositionX));
             drinkFountainDevice.setPositionY(drinkCursor.getInt(indexPositionY));
             drinkFountainDevice.setDescription(drinkCursor.getString(indexDescription));
+            drinkFountainDevice.setFloor(drinkCursor.getInt(indexFloor));
 
         }
         return drinkFountainDevice;

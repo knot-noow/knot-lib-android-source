@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -29,6 +29,9 @@ public class Util {
     // Sql comments begin with two consecutive "-" characters
     private static final String REG_COMMENT_EXPRESSION = "--";
     private static final String REG_EXPRESSION = ";";
+
+    private static final float COMPLETE_LEVEL_PERCENT = 100;
+    private static final float COMPLETE_LEVEL_LITERS = 20;
 
     /**
      * Split in strings the content of sql files.
@@ -66,5 +69,14 @@ public class Util {
         }
 
         return stringBuilder.toString().split(REG_EXPRESSION);
+    }
+
+    /**
+     * USed to calculate the percent of the water level
+     * @param waterLevel Level in Liters
+     * @return Level in percent
+     */
+    public static float calculateWaterLevel(float waterLevel){
+        return (COMPLETE_LEVEL_PERCENT*waterLevel)/COMPLETE_LEVEL_LITERS;
     }
 }

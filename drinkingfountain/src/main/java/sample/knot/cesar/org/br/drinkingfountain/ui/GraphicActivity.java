@@ -1,17 +1,16 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
 package sample.knot.cesar.org.br.drinkingfountain.ui;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,18 +22,25 @@ import sample.knot.cesar.org.br.drinkingfountain.ui.fragment.GraphicFragment;
 
 public class GraphicActivity extends AppCompatActivity {
 
+    /**
+     * UUID used to create the graphic
+     */
+    public static final String KEY_UUID = "key_uuid";
     private GraphicFragment graphicFragment;
+    private String uuid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.graphic_activity);
 
+        this.uuid = getIntent().getStringExtra(KEY_UUID);
+
         initFragment(savedInstanceState);
     }
 
     private void initFragment(@Nullable Bundle savedInstanceState) {
-        this.graphicFragment = GraphicFragment.newInstance("uuid");
+        this.graphicFragment = GraphicFragment.newInstance(this.uuid);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment buffer = fragmentManager.findFragmentByTag(GraphicFragment.class.getName());
