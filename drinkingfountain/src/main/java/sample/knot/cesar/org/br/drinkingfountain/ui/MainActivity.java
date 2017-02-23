@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleAboutMenu() {
         // TODO - finish this code later
-        Intent startGraphic = new Intent(MainActivity.this, GraphicActivity.class);
-        startGraphic.putExtra(GraphicActivity.KEY_UUID, "invalid-uuid");
-        startActivity(startGraphic);
     }
 
 
