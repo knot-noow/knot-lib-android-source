@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.ui.fragment.DrinkingFountainFragment;
 import sample.knot.cesar.org.br.drinkingfountain.ui.fragment.MapFragment;
+import sample.knot.cesar.org.br.drinkingfountain.util.Stub;
 import sample.knot.cesar.org.br.drinkingfountain.view.CustomViewPager;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO - use this block of code to test with data
+//        Stub stub = new Stub();
+//        stub.executeStub(8,30);
 
         initView();
     }

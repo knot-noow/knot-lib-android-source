@@ -101,18 +101,16 @@ public class MapFragment extends Fragment implements KnotMap.OnDrinkFountainList
 
     private void tempMockItems(@NonNull View view) {
 
-    //TODO - use this block of code to test with data
-//        Stub stub = new Stub();
-//        stub.executeStub(6,10);
+        List<DrinkFountainDevice> drinkFountainDevicesGroundFloor = FacadeDatabase.getInstance().getDrinkFountainByFloor(DrinkFountainDevice.GROUND_FLOOR);
 
-        List<DrinkFountainDevice> drinkFountainDevices = FacadeDatabase.getInstance().getAllDrinkFountain();
+        List<DrinkFountainDevice> drinkFountainDevicesFirstFloor = FacadeDatabase.getInstance().getDrinkFountainByFloor(DrinkFountainDevice.FIRST_FLOOR);
 
         mKnotMapFirstFloor = (KnotMap) view.findViewById(R.id.map_first_floor);
         mKnotMapSecondFloor = (KnotMap) view.findViewById(R.id.map_second_floor);
 
 
-        mKnotMapSecondFloor.fillMapWithWaterBottle(R.drawable.tir_second_floor, drinkFountainDevices, getActivity());
-        mKnotMapFirstFloor.fillMapWithWaterBottle(R.drawable.tir_first_floor, drinkFountainDevices, getActivity());
+        mKnotMapSecondFloor.fillMapWithWaterBottle(R.drawable.tir_second_floor, drinkFountainDevicesFirstFloor, getActivity());
+        mKnotMapFirstFloor.fillMapWithWaterBottle(R.drawable.tir_first_floor, drinkFountainDevicesGroundFloor, getActivity());
 
         mKnotMapFirstFloor.setOnDrinkFountainListener(this);
         mKnotMapSecondFloor.setOnDrinkFountainListener(this);

@@ -129,7 +129,7 @@ public class WaterBottleMap extends FrameLayout {
         mdrDrinkFountainDevice = drinkFountainDevice;
         float waterLevel = 0;
 
-        WaterbottleView bottle = (WaterbottleView) mFrameLayout.findViewById(R.id.water_bottle_map);
+        WaterBottleView bottle = (WaterBottleView) mFrameLayout.findViewById(R.id.water_bottle_map);
         WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
         if(waterLevelData!=null){

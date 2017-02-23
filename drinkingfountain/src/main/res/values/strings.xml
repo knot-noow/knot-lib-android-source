@@ -16,4 +16,12 @@
     <string name="title_map">Mapa</string>
     <string name="menu_about">Sobre</string>
 
+    <!--Grid fragment-->
+    <string name="ground_floor">Térreo</string>
+    <string name="first_floor">Primeiro andar</string>
+
+    <!--WaterView-->
+
+    <string name="liters">L</string>
+
 </resources>
