@@ -10,10 +10,6 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.database;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
@@ -95,32 +91,7 @@ public class FacadeDatabase {
      * @return the list with lasts device history.
      */
     public List<WaterLevelData> getDeviceHistory(String drinkFountainUUID) {
-        Calendar calendar = Calendar.getInstance();
-        List<WaterLevelData> mockdata = new ArrayList<>();
-
-        //1
-        WaterLevelData waterLevelData = new WaterLevelData();
-        waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
-        waterLevelData.setCurrentValue(10);
-        mockdata.add(waterLevelData);
-        // mock some data
-        for (int count = 1; count < 20; count++) {
-            waterLevelData = new WaterLevelData();
-            if (count % 5 == 0) {
-                calendar.add(Calendar.DATE, 1);
-            }
-            Log.d("lopes", "date::"+calendar.getTime().toString());
-            waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
-            waterLevelData.setCurrentValue((float) (count * 20));
-            mockdata.add(waterLevelData);
-        }
-
-        waterLevelData.setTimestamp(String.valueOf(System.currentTimeMillis()));
-        waterLevelData.setCurrentValue(30);
-        mockdata.add(waterLevelData);
-
-        return mockdata;
-        //return mDrinkFountainDAO.getDeviceHistory(drinkFountainUUID);
+        return mDrinkFountainDAO.getDeviceHistory(drinkFountainUUID);
     }
 
     /**

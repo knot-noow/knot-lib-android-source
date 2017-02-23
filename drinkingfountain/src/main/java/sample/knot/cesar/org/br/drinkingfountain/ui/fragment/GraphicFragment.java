@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
@@ -117,6 +118,9 @@ public class GraphicFragment extends Fragment {
     private void generateDefaultData() {
         if (!TextUtils.isEmpty(this.uuid)) {
             final List<WaterLevelData> deviceHistory = FacadeDatabase.getInstance().getDeviceHistory(this.uuid);
+            // Sort the list by timestampt
+            Collections.sort(deviceHistory, new OrderListByTimestamp());
+
             final int numSubcolumns = 1;
             final int numColumns = deviceHistory.size();
             final List<Column> columns = new ArrayList<Column>();
@@ -166,7 +170,6 @@ public class GraphicFragment extends Fragment {
 
     private List<AxisValue> configureAxisX(@NonNull List<WaterLevelData> list) {
         // sort the given list of WaterLevelData
-        Collections.sort(list, new OrderWaterLevelData());
         final List<AxisValue> axisValues = new ArrayList<>();
         final Calendar calendar = Calendar.getInstance();
         float lastCurrentTime = 0.0f;
@@ -197,23 +200,26 @@ public class GraphicFragment extends Fragment {
     }
 
 
-    private static class OrderWaterLevelData implements Comparator<WaterLevelData> {
+    private static class OrderListByTimestamp implements Comparator<WaterLevelData> {
 
         @Override
         public int compare(WaterLevelData waterLevelData, WaterLevelData t1) {
-            float timeStampOrig;
-            float timeStampRef;
+            long timeStampOrig;
+            long timeStampRef;
+            Date d1;
+            Date d2;
             if (waterLevelData != null && t1 != null
                     && !TextUtils.isEmpty(waterLevelData.getTimestamp()) && !TextUtils.isEmpty(t1.getTimestamp())) {
 
                 // convert the times
-                timeStampOrig = Float.parseFloat(waterLevelData.getTimestamp());
-                timeStampRef = Float.parseFloat(t1.getTimestamp());
+                timeStampOrig = Long.parseLong(waterLevelData.getTimestamp());
+                timeStampRef = Long.parseLong(t1.getTimestamp());
 
-                // check the data
-                if (timeStampOrig > timeStampRef) {
-                    return 1;
-                }
+                // Dates
+                d1 = new Date(timeStampOrig);
+                d2 = new Date(timeStampRef);
+
+                return d1.compareTo(d2);
             }
             return 0;
         }
@@ -247,8 +253,8 @@ public class GraphicFragment extends Fragment {
 
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            final String waterReceived = getString(R.string.graphic_use_of_day) +" "+ (int) value.getValue() + " l";
-            Snackbar.make(getView(), waterReceived , Snackbar.LENGTH_SHORT).show();
+            final String waterReceived = getString(R.string.graphic_use_of_day) + " " + (int) value.getValue() + " l";
+            Snackbar.make(getView(), waterReceived, Snackbar.LENGTH_SHORT).show();
         }
 
         @Override

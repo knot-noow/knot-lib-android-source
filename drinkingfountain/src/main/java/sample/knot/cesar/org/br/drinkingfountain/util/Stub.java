@@ -12,8 +12,10 @@ package sample.knot.cesar.org.br.drinkingfountain.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import br.org.cesar.knot.lib.model.KnotQueryDateData;
@@ -33,13 +35,13 @@ public class Stub {
     private FacadeDatabase mDrinkFountainDB;
 
 
-    public Stub(){
+    public Stub() {
         mTimeInMillis = mDate.getTimeInMillis();
         mDrinkFountainDB = FacadeDatabase.getInstance();
 
     }
 
-    public void executeStub(int numbOfDevice,int numberOfData){
+    public void executeStub(int numbOfDevice, int numberOfData) {
 
         for (int i = 0; i < numbOfDevice; i++) {
             generateDevice(numberOfData, i);
@@ -47,13 +49,13 @@ public class Stub {
 
     }
 
-    private void generateDevice(int numberOfData, int number){
+    private void generateDevice(int numberOfData, int number) {
         DrinkFountainDevice drinkFountainDevice = new DrinkFountainDevice();
         drinkFountainDevice.setUuid(String.valueOf(getUuid()));
         drinkFountainDevice.setToken("fadfdfd");
         drinkFountainDevice.setPositionX(getX());
         drinkFountainDevice.setPositionY(getY());
-        drinkFountainDevice.setDescription("Bebedouro "+number);
+        drinkFountainDevice.setDescription("Bebedouro " + number);
 
         mDrinkFountainDB.insertDrinkFountain(drinkFountainDevice);
         mTimeInMillis = mDate.getTimeInMillis();
@@ -63,12 +65,12 @@ public class Stub {
         }
     }
 
-    private long getUuid(){
+    private long getUuid() {
         Calendar date = Calendar.getInstance();
         return date.getTimeInMillis();
     }
 
-    private void generateData(String uuid){
+    private void generateData(String uuid) {
 
         try {
             KnotQueryDateData knotQueryDateData = getCurrentKnotQueryDateData();
@@ -91,7 +93,38 @@ public class Stub {
 
     }
 
-    public  KnotQueryDateData getCurrentKnotQueryDateData() throws ParseException {
+    /***
+     * Mock some data to be used on Chart integration
+     *
+     * @return a list of mocked WaterLevelData
+     */
+    public List<WaterLevelData> createMockChartData() {
+        Calendar calendar = Calendar.getInstance();
+        List<WaterLevelData> mockdata = new ArrayList<>();
+
+        WaterLevelData waterLevelData = new WaterLevelData();
+        waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
+        waterLevelData.setCurrentValue(10);
+        mockdata.add(waterLevelData);
+        // mock some data
+        for (int count = 1; count < 20; count++) {
+            waterLevelData = new WaterLevelData();
+            if (count % 5 == 0) {
+                calendar.add(Calendar.DATE, 1);
+            }
+            waterLevelData.setTimestamp(String.valueOf(calendar.getTime().getTime()));
+            waterLevelData.setCurrentValue((float) (count * 20));
+            mockdata.add(waterLevelData);
+        }
+
+        waterLevelData.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        waterLevelData.setCurrentValue(30);
+        mockdata.add(waterLevelData);
+
+        return mockdata;
+    }
+
+    public KnotQueryDateData getCurrentKnotQueryDateData() throws ParseException {
 
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
@@ -112,23 +145,22 @@ public class Stub {
         return knotQueryDateData;
     }
 
-    private int getY(){
+    private int getY() {
         return ThreadLocalRandom.current().nextInt(100, 2300);
     }
 
 
-    private int getX(){
+    private int getX() {
         return ThreadLocalRandom.current().nextInt(100, 700);
     }
 
-    private void calcWaterLevel(){
+    private void calcWaterLevel() {
         int randomNum = ThreadLocalRandom.current().nextInt(1, 3);
 
-        mWaterLevel-=randomNum;
+        mWaterLevel -= randomNum;
 
-        if(mWaterLevel <= 0){
+        if (mWaterLevel <= 0) {
             mWaterLevel = 20 + mWaterLevel;
         }
-
     }
 }
