@@ -10,6 +10,7 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_about:
                 handleAboutMenu();
                 break;
+            case R.id.menu_settings:
+                handleSettingsMenu();
+                break;
             default:
                 // ignore the click
                 break;
@@ -80,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
     private void handleAboutMenu() {
         // TODO - finish this code later
     }
+
+    private void handleSettingsMenu() {
+        Intent it = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(it);
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////////////
