@@ -19,6 +19,10 @@ public class DrinkFountainDevice extends AbstractThingDevice {
     public static final long DANGEROUS = 6;
     public static final long ATTENTION = 10;
 
+    public static final int GROUND_FLOOR = 0;
+    public static final int FIRST_FLOOR = 1;
+
+
     private String description;
     private int positionX, positionY, floor;
 

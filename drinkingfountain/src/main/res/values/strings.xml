@@ -21,4 +21,12 @@
     <string name="token_value">token_value</string>
     <string name="save">Salvar</string>
 
+    <!--Grid fragment-->
+    <string name="ground_floor">Térreo</string>
+    <string name="first_floor">Primeiro andar</string>
+
+    <!--WaterView-->
+
+    <string name="liters">L</string>
+
 </resources>
