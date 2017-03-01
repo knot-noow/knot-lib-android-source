@@ -23,12 +23,13 @@ import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
+import sample.knot.cesar.org.br.drinkingfountain.util.PreferenceUtil;
 
 public class KnotHttpCommunication implements KnotCommunication {
 
-    private static final String ENDPOINT = "http://192.168.1.10:3000";
-    private static final String UUID_OWNER = "197b5876-7c5c-4c6e-8895-af17a5870000";
-    private static final String TOKEN_OWNER = "f1788ed09e646d2cd1aef1a9582632d9e0034fff";
+    private static final String ENDPOINT = PreferenceUtil.getInstance().getEndPoint();
+    private static final String UUID_OWNER = PreferenceUtil.getInstance().getUuid();
+    private static final String TOKEN_OWNER = PreferenceUtil.getInstance().getTonken();
 
     private static final Object lock = new Object();
 
