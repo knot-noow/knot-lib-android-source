@@ -46,6 +46,8 @@ import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 public class GraphicFragment extends Fragment {
 
     private static final String KEY_UUID = "key_uuid";
+    private static final String SPACE = " ";
+    private static final String LITERS = " L";
 
     // members
     private ColumnChartData data;
@@ -206,8 +208,8 @@ public class GraphicFragment extends Fragment {
         public int compare(WaterLevelData waterLevelData, WaterLevelData t1) {
             long timeStampOrig;
             long timeStampRef;
-            Date d1;
-            Date d2;
+            Date dateOrigin;
+            Date dateRef;
             if (waterLevelData != null && t1 != null
                     && !TextUtils.isEmpty(waterLevelData.getTimestamp()) && !TextUtils.isEmpty(t1.getTimestamp())) {
 
@@ -216,18 +218,20 @@ public class GraphicFragment extends Fragment {
                 timeStampRef = Long.parseLong(t1.getTimestamp());
 
                 // Dates
-                d1 = new Date(timeStampOrig);
-                d2 = new Date(timeStampRef);
+                dateOrigin = new Date(timeStampOrig);
+                dateRef = new Date(timeStampRef);
 
-                return d1.compareTo(d2);
+                return dateOrigin.compareTo(dateRef);
             }
             return 0;
         }
     }
 
     private void previewX(boolean animate) {
+
+        float four = 4;
         Viewport tempViewport = new Viewport(chart.getMaximumViewport());
-        float dx = tempViewport.width() / 4;
+        float dx = tempViewport.width() / four;
         tempViewport.inset(dx, 0);
         if (animate) {
             previewChart.setCurrentViewportWithAnimation(tempViewport);
@@ -253,14 +257,12 @@ public class GraphicFragment extends Fragment {
 
         @Override
         public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-            final String waterReceived = getString(R.string.graphic_use_of_day) + " " + (int) value.getValue() + " l";
+            final String waterReceived = getString(R.string.graphic_use_of_day) + SPACE + (int) value.getValue() + LITERS;
             Snackbar.make(getView(), waterReceived, Snackbar.LENGTH_SHORT).show();
         }
 
         @Override
         public void onValueDeselected() {
-            // TODO Auto-generated method stub
-
         }
 
     }

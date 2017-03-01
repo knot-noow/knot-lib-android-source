@@ -36,4 +36,10 @@
     <dimen name="water_card_view_layout_margin">5dp</dimen>
     <dimen name="water_card_view_text_size">15dp</dimen>
     <dimen name="water_card_view_subtitle_text_size">8dp</dimen>
+
+    <!-- Graphic Fragment-->
+    <dimen name="graphic_fragment_margin_bottom">8dp</dimen>
+    <dimen name="graphic_fragment_margin_top">8dp</dimen>
+    <dimen name="graphic_fragment_layout_height">2dp</dimen>
+
 </resources>

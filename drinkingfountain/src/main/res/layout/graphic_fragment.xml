@@ -27,9 +27,9 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/graphic_fragment_layout_height"
+        android:layout_marginBottom="@dimen/graphic_fragment_margin_bottom"
+        android:layout_marginTop="@dimen/graphic_fragment_margin_top"
         android:background="@android:color/darker_gray" />
 
     <lecho.lib.hellocharts.view.PreviewColumnChartView
