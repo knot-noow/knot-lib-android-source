@@ -15,6 +15,11 @@
     <string name="title_drinking_fountain">Bebedouros</string>
     <string name="title_map">Mapa</string>
     <string name="menu_about">Sobre</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="end_point_values">End point values</string>
+    <string name="uuid_value">UUID value</string>
+    <string name="token_value">token_value</string>
+    <string name="save">Salvar</string>
 
     <!--Grid fragment-->
     <string name="ground_floor">Térreo</string>
