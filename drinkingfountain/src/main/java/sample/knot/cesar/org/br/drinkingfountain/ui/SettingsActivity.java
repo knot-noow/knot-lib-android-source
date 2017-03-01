@@ -1,3 +1,13 @@
+/*
+ *
+ *  Copyright (c) 2017, CESAR.
+ *  All rights reserved.
+ *
+ *  This software may be modified and distributed under the terms
+ *  of the BSD license. See the LICENSE file for details.
+ *
+ */
+
 package sample.knot.cesar.org.br.drinkingfountain.ui;
 
 import android.app.Activity;
@@ -67,9 +77,6 @@ public class SettingsActivity extends Activity {
     }
 
     private boolean iSCanSave() {
-        Log.i("DJACA", "Primeira expressão: "+ (mEdtEndPoint != null &&  !mEdtEndPoint.getText().toString().equals(Util.EMPTY_STRING) ));
-        Log.i("DJACA", "Segunda  expressão: "+ ( mEdtUUID != null && !mEdtUUID.getText().toString().equals(Util.EMPTY_STRING) ));
-        Log.i("DJACA", "Terceira expressão: "+ ( mEdtToken != null && !mEdtToken.getText().toString().equals(Util.EMPTY_STRING)));
         return mEdtEndPoint != null &&  !mEdtEndPoint.getText().toString().equals(Util.EMPTY_STRING)  &&
                 mEdtUUID != null && !mEdtUUID.getText().toString().equals(Util.EMPTY_STRING) &&
                 mEdtToken != null && !mEdtToken.getText().toString().equals(Util.EMPTY_STRING);
