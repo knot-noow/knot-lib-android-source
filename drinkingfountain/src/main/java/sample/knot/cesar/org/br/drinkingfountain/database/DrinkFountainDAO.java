@@ -32,6 +32,7 @@ class DrinkFountainDAO {
     private static final String DESC_CLAUSE = " DESC ";
     private static final String WHERE_DRINK_FOUNTAIN_UUID = DrinkFountainDevice.Columns.COLUMN_UUID + EQUALS;
     private static final String WHERE_WALTER_DRINK_UUID = WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID + EQUALS;
+    private static final String WHERE_DRINK_FOUNTAIN_FLOOR = DrinkFountainDevice.Columns.COLUMN_FLOOR + EQUALS;
 
     public DrinkFountainDAO() {
         DrinkFountainDatabase database = new DrinkFountainDatabase(DrinkApplication.getContext());
@@ -134,6 +135,31 @@ class DrinkFountainDAO {
 
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
                 null, null, null, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    DrinkFountainDevice currentDevice = buildDrinkFountainByCursor(cursor);
+
+                    drinkFountainList.add(currentDevice);
+                    cursor.moveToNext();
+                } while (!cursor.isAfterLast());
+            }
+            cursor.close();
+        }
+        return drinkFountainList;
+    }
+
+
+    /**
+     * Gets  drink fountains by floor.
+     *
+     * @return a List containing all drink fountains of the specif floor
+     */
+    public List<DrinkFountainDevice> getDrinkFountainByFloor(int floor) {
+        ArrayList<DrinkFountainDevice> drinkFountainList = new ArrayList<>();
+        String[] args = new String[]{String.valueOf(floor)};
+        Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
+                null, WHERE_DRINK_FOUNTAIN_FLOOR, args, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {

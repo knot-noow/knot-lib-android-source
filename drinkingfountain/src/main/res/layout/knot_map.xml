@@ -12,8 +12,9 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="2440px"
-    android:layout_height="703px"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/map_view_layout_width"
+    android:layout_height="@dimen/map_view_layout_height"
     android:clipChildren="false"
     >
 

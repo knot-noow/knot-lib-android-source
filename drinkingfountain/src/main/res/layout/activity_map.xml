@@ -31,14 +31,14 @@
 
     <Button
         android:id="@+id/btn_change_floor"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textSize="25dp"
+        android:layout_width="@dimen/btn_change_floor_size"
+        android:layout_height="@dimen/btn_change_floor_size"
+        android:textSize="@dimen/btn_change_floor_text_size"
         android:textColor="@android:color/holo_blue_bright"
         android:textStyle="bold"
         android:text="T"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="@dimen/btn_change_floor_margin_left"
+        android:layout_marginBottom="@dimen/btn_change_floor_margin_bottom"
         android:background="@drawable/bg_btn_change_floor"
         android:layout_alignParentBottom="true"/>
 

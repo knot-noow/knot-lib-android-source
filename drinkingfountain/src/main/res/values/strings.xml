@@ -9,6 +9,7 @@
   -->
 
 <resources>
+
     <string name="app_name">DrinkingFountain</string>
 
     <!-- HomeScreen -->
@@ -21,5 +22,11 @@
     <string name="graphic_liters">Litros</string>
     <string name="graphic_use_of_day">Uso neste dia: </string>
 
+    <!--Grid fragment-->
+    <string name="ground_floor">Térreo</string>
+    <string name="first_floor">Primeiro andar</string>
 
+    <!--WaterView-->
+
+    <string name="liters">L</string>
 </resources>

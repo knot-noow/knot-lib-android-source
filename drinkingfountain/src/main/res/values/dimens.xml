@@ -11,5 +11,29 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>50dp
+
+    <!--MapFragment-->
+    <dimen name="btn_change_floor_size">50dp</dimen>
+    <dimen name="btn_change_floor_text_size">25dp</dimen>
+    <dimen name="btn_change_floor_margin_left">20dp</dimen>
+    <dimen name="btn_change_floor_margin_bottom">20dp</dimen>
+
+    <!--Map View-->
+    <dimen name="map_view_layout_width">2440px</dimen>
+    <dimen name="map_view_layout_height">703px</dimen>
+
+    <!--Water Bottle-->
+    <dimen name="text_view_waterbottle_margin_bottom">40dp</dimen>
+
+    <!--Water Bottle Map-->
+    <dimen name="water_map_view_layout_width">2000px</dimen>
+    <dimen name="water_map_view_layout_height">2000px</dimen>
+
+    <!--WaterCardView-->
+    <dimen name="water_card_view_layout_height">230dp</dimen>
+    <dimen name="water_card_view_elevation">3dp</dimen>
+    <dimen name="water_card_view_layout_margin">5dp</dimen>
+    <dimen name="water_card_view_text_size">15dp</dimen>
+    <dimen name="water_card_view_subtitle_text_size">8dp</dimen>
 </resources>

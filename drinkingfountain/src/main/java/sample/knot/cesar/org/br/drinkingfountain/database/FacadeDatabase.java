@@ -82,6 +82,16 @@ public class FacadeDatabase {
      */
     public List<DrinkFountainDevice> getAllDrinkFountain() {
         return mDrinkFountainDAO.getAllDrinkFountain();
+
+    }
+
+    /**
+     * Gets  drink fountains by floor.
+     *
+     * @return a List containing all drink fountains of the specif floor
+     */
+    public List<DrinkFountainDevice> getDrinkFountainByFloor(int floor){
+        return mDrinkFountainDAO.getDrinkFountainByFloor(floor);
     }
 
     /**

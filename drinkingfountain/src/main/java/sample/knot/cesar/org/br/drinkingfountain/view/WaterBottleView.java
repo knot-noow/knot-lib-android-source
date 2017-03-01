@@ -21,34 +21,34 @@ import android.widget.TextView;
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 
-public class WaterbottleView extends LinearLayout {
+public class WaterBottleView extends LinearLayout {
 
     private final static int CALCULATE_FACTOR = 100;
+    private final static int COMPLETE_WATER_LEVEL = 20;
 
     private final static int ROTATION_POSITIVE_VALUE = 2;
     private final static int ROTATION_NEGATIVE_VALUE = -2;
 
-    private final static int ANIMATION_DURATION = 500;
-    private final static String TEXT_PERCENT = "%";
+    private final static int ANIMATION_DURATION = 1000;
+    private final static int Y_ANIMATION_DURATION = 1;
 
-
-    private float mPosition = -1;
+    private float mWaterLevel = 0;
     private View view;
     private TextView mLevelInformation;
 
     private View mWaterView;
 
-    public WaterbottleView(Context context) {
+    public WaterBottleView(Context context) {
         super(context);
         initView();
     }
 
-    public WaterbottleView(Context context, AttributeSet attrs) {
+    public WaterBottleView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
-    public WaterbottleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public WaterBottleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -75,7 +75,9 @@ public class WaterbottleView extends LinearLayout {
      * @param level Level of the water in the water bottle
      */
     public void setWaterHeight(float level) {
-        this.mPosition = level;
+        this.mWaterLevel = level;
+        calcHighOfWater(mWaterLevel);
+
     }
 
     /**
@@ -83,23 +85,18 @@ public class WaterbottleView extends LinearLayout {
      *
      * @param percent
      */
-    private void calcHightOfWater(float percent) {
+    private void calcHighOfWater(float percent) {
+
+        percent = (percent*CALCULATE_FACTOR)/COMPLETE_WATER_LEVEL;
+
         long height = getHeight();
         long position = (long)(height * percent) / CALCULATE_FACTOR;
         long positionY = getHeight() - position;
 
-        mWaterView.animate().y(positionY);
+        mWaterView.animate().y(positionY).setDuration(Y_ANIMATION_DURATION);
 
 
-        mLevelInformation.setText(this.mPosition + TEXT_PERCENT);
-
-        if (percent < DrinkFountainDevice.DANGEROUS) {
-            mLevelInformation.setTextColor(Color.RED);
-        } else if (percent < DrinkFountainDevice.ATTENTION) {
-            mLevelInformation.setTextColor(Color.YELLOW);
-        } else {
-            mLevelInformation.setTextColor(Color.WHITE);
-        }
+        mLevelInformation.setText(String.valueOf(mWaterLevel)+" "+getContext().getResources().getString(R.string.liters));
 
     }
 
@@ -107,14 +104,14 @@ public class WaterbottleView extends LinearLayout {
      * Water Continuous animation
      */
     private void startAnimation() {
-        calcHightOfWater(mPosition);
+        calcHighOfWater(mWaterLevel);
         mWaterView.animate().rotation(ROTATION_POSITIVE_VALUE).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
             @Override
             public void run() {
                 mWaterView.animate().rotation(ROTATION_NEGATIVE_VALUE).setDuration(ANIMATION_DURATION).withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        calcHightOfWater(mPosition + 1);
+                        calcHighOfWater(mWaterLevel + 1);
                         startAnimation();
                     }
                 });
