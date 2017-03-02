@@ -7,6 +7,7 @@
  *
  *
  */
+
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
 import org.json.JSONException;

@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -17,9 +17,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import sample.knot.cesar.org.br.drinkingfountain.application.DrinkApplication;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
-import sample.knot.cesar.org.br.drinkingfountain.application.DrinkApplication;
 
 class DrinkFountainDAO {
 

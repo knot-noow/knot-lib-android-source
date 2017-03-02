@@ -10,8 +10,6 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
-import android.support.annotation.NonNull;
-
 /**
  * Created by usuario on 11/02/17.
  */

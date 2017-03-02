@@ -7,9 +7,8 @@
  *
  *
  */
-package sample.knot.cesar.org.br.drinkingfountain.communication;
 
-import android.content.Context;
+package sample.knot.cesar.org.br.drinkingfountain.communication;
 
 import java.text.ParseException;
 import java.util.List;

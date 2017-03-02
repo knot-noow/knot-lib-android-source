@@ -1,10 +1,10 @@
 /*
+ * Copyright (c) 2017, CESAR.
+ * All rights reserved.
  *
- *  Copyright (c) 2017, CESAR.
- *  All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the BSD license. See the LICENSE file for details.
  *
- *  This software may be modified and distributed under the terms
- *  of the BSD license. See the LICENSE file for details.
  *
  */
 
@@ -26,6 +26,7 @@ public class FacadeDatabase {
 
     /**
      * Create a static instance of facade
+     *
      * @return the facade instance
      */
     public synchronized static FacadeDatabase getInstance() {
@@ -105,6 +106,7 @@ public class FacadeDatabase {
 
     /**
      * Get a current level value collected of specific device.
+     *
      * @param deviceUUID the uuid of specific device
      * @return the object last collected of the specific device
      */
