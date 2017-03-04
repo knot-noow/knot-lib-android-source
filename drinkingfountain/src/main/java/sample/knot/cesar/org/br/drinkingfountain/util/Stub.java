@@ -86,7 +86,7 @@ public class Stub {
             WaterLevelData waterLevelData = new WaterLevelData();
             waterLevelData.setCurrentValue(mWaterLevel);
             waterLevelData.setWaterFountainUUID(uuid);
-            waterLevelData.setTimestamp(DateUtils.getTimeStamp(knotQueryDateData));
+            waterLevelData.setTimestamp(Util.convertDBFormatToMilliseconds(DateUtils.getTimeStamp(knotQueryDateData)));
 
 
             mDrinkFountainDB.insertWalterLevelData(waterLevelData);

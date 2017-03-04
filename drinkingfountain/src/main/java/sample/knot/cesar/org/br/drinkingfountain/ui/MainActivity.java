@@ -16,6 +16,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -42,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TODO - use this block of code to test with data
-//        Stub stub = new Stub();
-//        stub.executeStub(8,30);
-
         initView();
     }
 
@@ -54,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         // configure the toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(R.string.main_activity_label);
 
         // init the PageView
         this.viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
         // Give the TabLayout the ViewPager
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override

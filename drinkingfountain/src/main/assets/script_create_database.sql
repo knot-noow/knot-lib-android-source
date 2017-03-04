@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS tb_water_level_data(
     _id                     INTEGER PRIMARY KEY AUTOINCREMENT,
     drink_fountain_uuid     VARCHAR( 200 ) NOT NULL,
     current_value           REAL DEFAULT 0.0,
-    time_stamp              VARCHAR( 200 ) NOT NULL
+    time_stamp              BIGINTEGER DEFAULT 0
 );

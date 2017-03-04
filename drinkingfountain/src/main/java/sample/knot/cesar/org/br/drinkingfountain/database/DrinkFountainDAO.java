@@ -14,12 +14,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import sample.knot.cesar.org.br.drinkingfountain.application.DrinkApplication;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
+import sample.knot.cesar.org.br.drinkingfountain.util.Util;
 
 class DrinkFountainDAO {
 
@@ -29,10 +32,13 @@ class DrinkFountainDAO {
 
     //DB constants
     private static final String EQUALS = " = ? ";
+    private static final String BIGGER_THEN = " > ? ";
     private static final String DESC_CLAUSE = " DESC ";
+    private static final String AND = " AND ";
     private static final String WHERE_DRINK_FOUNTAIN_UUID = DrinkFountainDevice.Columns.COLUMN_UUID + EQUALS;
     private static final String WHERE_WALTER_DRINK_UUID = WaterLevelData.Columns.COLUMN_DRINK_FOUNTAIN_UUID + EQUALS;
     private static final String WHERE_DRINK_FOUNTAIN_FLOOR = DrinkFountainDevice.Columns.COLUMN_FLOOR + EQUALS;
+    private static final String WHERE_WATER_DRINK_HISTORICAL = WHERE_WALTER_DRINK_UUID + AND + WaterLevelData.Columns.COLUMN_TIMESTAMP + BIGGER_THEN;
 
     public DrinkFountainDAO() {
         DrinkFountainDatabase database = new DrinkFountainDatabase(DrinkApplication.getContext());
@@ -97,7 +103,7 @@ class DrinkFountainDAO {
      * @param deviceUUID uuid of specific device
      * @return
      */
-    private DrinkFountainDevice getDrinkFountainDeviceByUUID(String deviceUUID) {
+    public DrinkFountainDevice getDrinkFountainDeviceByUUID(String deviceUUID) {
         String[] args = new String[]{deviceUUID};
         DrinkFountainDevice drinkFountainDevice = null;
         Cursor cursor = sqliteDatabase.query(DrinkFountainDevice.Columns.TABLE_DRINK_FOUNTAIN,
@@ -173,6 +179,8 @@ class DrinkFountainDAO {
         }
         return drinkFountainList;
     }
+
+
 
     /**
      * build a content value object from a drink fountain object.
@@ -262,12 +270,13 @@ class DrinkFountainDAO {
      * @param waterLevelDataList that will be inserted
      * @return the row index affected
      */
-    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) {
+    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) throws ParseException {
         int rowsInserted = 0;
 
         sqliteDatabase.beginTransaction();
         for (WaterLevelData currentWalterLevelData : waterLevelDataList) {
             if (currentWalterLevelData != null) {
+                currentWalterLevelData.setTimestamp(Util.convertDBFormatToMilliseconds(currentWalterLevelData.getTimestamp()));
                 long rowId = insertWalterLevelData(currentWalterLevelData);
 
                 if (rowId != -1) {
@@ -294,10 +303,12 @@ class DrinkFountainDAO {
     public List<WaterLevelData> getDeviceHistory(String drinkFountainUUID) {
         ArrayList<WaterLevelData> waterLevelList = new ArrayList<>();
 
-        String[] args = new String[]{drinkFountainUUID};
+        WaterLevelData waterLevelData = getCurrentLevelByDeviceUUID(drinkFountainUUID);
+
+        String[] args = new String[]{drinkFountainUUID, String.valueOf(Util.getDateLimit(waterLevelData))};
 
         Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
-                null, WHERE_WALTER_DRINK_UUID, args, null, null, null);
+                null, WHERE_WATER_DRINK_HISTORICAL, args, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -354,7 +365,7 @@ class DrinkFountainDAO {
             }
 
             if (waterLevelData.getTimestamp() != null) {
-                contentValues.put(WaterLevelData.Columns.COLUMN_TIMESTAMP, waterLevelData.getTimestamp());
+                contentValues.put(WaterLevelData.Columns.COLUMN_TIMESTAMP, Long.parseLong(waterLevelData.getTimestamp()));
             }
         }
         return contentValues;

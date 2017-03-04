@@ -12,7 +12,6 @@ package sample.knot.cesar.org.br.drinkingfountain.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -48,9 +47,11 @@ public class GraphicActivity extends AppCompatActivity {
         // configure the toolbar
         setSupportActionBar(toolbar);
         // disable the title of  Activity
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(R.string.profile_activity_label);
+
 
         this.graphicFragment = GraphicFragment.newInstance(this.uuid);
 

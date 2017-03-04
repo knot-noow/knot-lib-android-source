@@ -10,6 +10,7 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import java.util.List;
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
+import sample.knot.cesar.org.br.drinkingfountain.ui.GraphicActivity;
 import sample.knot.cesar.org.br.drinkingfountain.view.KnotMap;
 
 public class MapFragment extends Fragment implements KnotMap.OnDrinkFountainListener{
@@ -117,6 +119,10 @@ public class MapFragment extends Fragment implements KnotMap.OnDrinkFountainList
 
     @Override
     public void onDrinkFountainClicked(String uuid) {
-        Toast.makeText(getContext(), "The uuid ("+uuid+") was clicked", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getActivity(),GraphicActivity.class);
+        intent.putExtra(GraphicActivity.KEY_UUID,uuid );
+
+        startActivity(intent);
     }
 }

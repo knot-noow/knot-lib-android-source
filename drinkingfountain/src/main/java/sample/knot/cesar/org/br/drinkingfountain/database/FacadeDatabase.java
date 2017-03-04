@@ -10,6 +10,7 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.database;
 
+import java.text.ParseException;
 import java.util.List;
 
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
@@ -86,6 +87,16 @@ public class FacadeDatabase {
     }
 
     /**
+     * Gets a drink fountain by uuid.
+     *
+     * @return a  drink fountains of the specif uuid
+     */
+    public DrinkFountainDevice getDrinkFountainByUUid(String uuid){
+        return mDrinkFountainDAO.getDrinkFountainDeviceByUUID(uuid);
+    }
+
+
+    /**
      * Gets  drink fountains by floor.
      *
      * @return a List containing all drink fountains of the specif floor
@@ -130,7 +141,7 @@ public class FacadeDatabase {
      * @param waterLevelDataList that will be inserted
      * @return the row index affected
      */
-    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) {
+    public long insertWalterLevelDataList(List<WaterLevelData> waterLevelDataList) throws ParseException {
         return mDrinkFountainDAO.insertWalterLevelDataList(waterLevelDataList);
     }
 

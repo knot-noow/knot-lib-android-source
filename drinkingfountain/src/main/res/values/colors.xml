@@ -10,9 +10,9 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#388c3b</color>
+    <color name="colorPrimaryDark">#387d38</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="secondary_color">#98C8DE</color>
+    <color name="secondary_color">#65b868</color>
     <color name="green_color">#008000</color>
 </resources>

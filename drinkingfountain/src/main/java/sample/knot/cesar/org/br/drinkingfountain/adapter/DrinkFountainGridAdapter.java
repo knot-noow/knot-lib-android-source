@@ -10,6 +10,7 @@
 package sample.knot.cesar.org.br.drinkingfountain.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
+import sample.knot.cesar.org.br.drinkingfountain.ui.GraphicActivity;
 import sample.knot.cesar.org.br.drinkingfountain.view.WaterBottleView;
 
 
@@ -50,7 +52,7 @@ public class DrinkFountainGridAdapter extends RecyclerView.Adapter<DrinkFountain
 
     @Override
     public void onBindViewHolder(WaterViewHolder holder, int position) {
-        DrinkFountainDevice drinkFountainDevice = mListOfWaterBottle.get(position);
+       final DrinkFountainDevice drinkFountainDevice = mListOfWaterBottle.get(position);
 
         WaterLevelData waterLevelData = mDataBase.getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
@@ -69,9 +71,10 @@ public class DrinkFountainGridAdapter extends RecyclerView.Adapter<DrinkFountain
             @Override
             public void onClick(View view) {
 
-//                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(((WaterGridActivity)mContext), Pair.create(view, "teste")).toBundle();
+                Intent intent = new Intent(mContext,GraphicActivity.class);
+                intent.putExtra(GraphicActivity.KEY_UUID,drinkFountainDevice.getUuid());
 
-//                mContext.startActivity(new Intent(((WaterGridActivity)mContext), MainActivity.class), bundle);
+                mContext.startActivity(intent);
             }
         });
 

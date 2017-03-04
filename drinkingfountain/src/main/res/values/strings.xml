@@ -11,6 +11,10 @@
 <resources>
 
     <string name="app_name">DrinkingFountain</string>
+    <string name="main_activity_label">KNoT Bebedouros </string>
+    <string name="splash_activity_label">KNoT \n Bebedouros </string>
+    <string name="profile_activity_label">Perfil </string>
+
 
     <!-- HomeScreen -->
     <string name="title_drinking_fountain">Bebedouros</string>
@@ -23,15 +27,16 @@
     <string name="save">Salvar</string>
 
     <!-- GraphicActivity -->
-    <string name="graphic_use">Uso</string>
+    <string name="graphic_use">Consumo</string>
     <string name="graphic_liters">Litros</string>
-    <string name="graphic_use_of_day">Uso neste dia: </string>
+    <string name="graphic_use_of_day">Consumo no dia: </string>Nível
+    <string name="graphic_water_level">Nível atual: </string>
+
 
     <!--Grid fragment-->
     <string name="ground_floor">Térreo</string>
     <string name="first_floor">Primeiro andar</string>
 
     <!--WaterView-->
-
     <string name="liters">L</string>
 </resources>

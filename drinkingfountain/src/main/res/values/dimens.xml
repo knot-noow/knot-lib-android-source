@@ -43,4 +43,19 @@
     <dimen name="graphic_fragment_margin_top">8dp</dimen>
     <dimen name="graphic_fragment_layout_height">2dp</dimen>
 
+    <dimen name="graphic_fragment_first_container_margin_l">10dp</dimen>
+    <dimen name="graphic_fragment_first_container_margin_r">10dp</dimen>
+    <dimen name="graphic_fragment_first_container_margin_t">20dp</dimen>
+    <dimen name="graphic_fragment_waterBottleView_margin_t">15dp</dimen>
+    <dimen name="graphic_fragment_waterBottleView_margin_b">15dp</dimen>
+    <dimen name="graphic_fragment_second_container_margin_l">5dp</dimen>
+    <dimen name="graphic_fragment_second_graphic_padding">10dp</dimen>
+
+    <dimen name="graphic_fragment_text_title_size">20dp</dimen>
+
+    <!-- Splash Fragment-->
+    <dimen name="splash_margin_bottom">30dp</dimen>
+
+
+
 </resources>
