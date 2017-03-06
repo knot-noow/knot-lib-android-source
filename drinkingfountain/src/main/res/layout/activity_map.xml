@@ -34,7 +34,7 @@
         android:layout_width="@dimen/btn_change_floor_size"
         android:layout_height="@dimen/btn_change_floor_size"
         android:textSize="@dimen/btn_change_floor_text_size"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:text="T"
         android:layout_marginLeft="@dimen/btn_change_floor_margin_left"

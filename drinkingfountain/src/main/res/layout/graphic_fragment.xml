@@ -1,42 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2017, CESAR.
-  ~ All rights reserved.
-  ~
-  ~ This software may be modified and distributed under the terms
-  ~ of the BSD license. See the LICENSE file for details.
-  ~
-  ~
-  -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    >
 
-    <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/chart"
+    <LinearLayout
+        android:layout_marginLeft="@dimen/graphic_fragment_first_container_margin_l"
+        android:layout_marginRight="@dimen/graphic_fragment_first_container_margin_r"
+        android:layout_marginTop="@dimen/graphic_fragment_first_container_margin_t"
+        android:background="@drawable/graphic_card"
+        android:layout_weight="3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </lecho.lib.hellocharts.view.ColumnChartView>
+        android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/graphic_fragment_layout_height"
-        android:layout_marginBottom="@dimen/graphic_fragment_margin_bottom"
-        android:layout_marginTop="@dimen/graphic_fragment_margin_top"
-        android:background="@android:color/darker_gray" />
+        <LinearLayout
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <lecho.lib.hellocharts.view.PreviewColumnChartView
-        android:id="@+id/chart_preview"
+            <sample.knot.cesar.org.br.drinkingfountain.view.WaterBottleView
+                android:id="@+id/water_bottle_graphic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/graphic_fragment_waterBottleView_margin_t"
+                android:layout_marginBottom="@dimen/graphic_fragment_waterBottleView_margin_b"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/graphic_fragment_second_container_margin_l"
+            android:layout_marginBottom="@dimen/graphic_fragment_first_container_margin_t"
+            android:gravity="bottom">
+
+            <TextView
+                android:id="@+id/water_graphic_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/graphic_fragment_second_container_margin_l"
+                android:textSize="@dimen/graphic_fragment_text_title_size"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/water_graphic_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/graphic_fragment_second_container_margin_l"
+                android:layout_marginRight="@dimen/graphic_fragment_second_container_margin_l"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/water_graphic_rest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/graphic_fragment_second_container_margin_l"
+                android:layout_marginRight="@dimen/graphic_fragment_second_container_margin_l"
+                android:textColor="@android:color/darker_gray"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginRight="@dimen/graphic_fragment_first_container_margin_r"
+        android:layout_marginLeft="@dimen/graphic_fragment_first_container_margin_l"
+        android:layout_marginTop="@dimen/graphic_fragment_first_container_margin_t"
+        android:layout_marginBottom="@dimen/graphic_fragment_first_container_margin_t"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </lecho.lib.hellocharts.view.PreviewColumnChartView>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/graphic_card">
+
+
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:paddingTop="@dimen/graphic_fragment_second_graphic_padding"
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </lecho.lib.hellocharts.view.ColumnChartView>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

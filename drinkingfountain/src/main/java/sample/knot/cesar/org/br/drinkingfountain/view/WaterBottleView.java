@@ -101,6 +101,15 @@ public class WaterBottleView extends LinearLayout {
     }
 
     /**
+     * Disable text tha shows the water level
+     */
+    public void disableTextInformation(){
+        if(mLevelInformation!=null){
+            mLevelInformation.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * Water Continuous animation
      */
     private void startAnimation() {

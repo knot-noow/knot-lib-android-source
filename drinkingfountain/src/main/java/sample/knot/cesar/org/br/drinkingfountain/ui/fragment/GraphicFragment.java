@@ -19,15 +19,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.listener.ViewportChangeListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -38,22 +40,29 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
-import lecho.lib.hellocharts.view.PreviewColumnChartView;
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
+import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
+import sample.knot.cesar.org.br.drinkingfountain.model.GraphicDate;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
+import sample.knot.cesar.org.br.drinkingfountain.util.Util;
+import sample.knot.cesar.org.br.drinkingfountain.view.WaterBottleView;
 
 public class GraphicFragment extends Fragment {
 
     private static final String KEY_UUID = "key_uuid";
     private static final String SPACE = " ";
     private static final String LITERS = " L";
+    private static final String SEPARATOR = ": ";
+
+    private static final int LEVEL_FULL = 21;
 
     // members
-    private ColumnChartData data;
-    private ColumnChartView chart;
-    private PreviewColumnChartView previewChart;
+    private ColumnChartData mColumnData;
+    private ColumnChartView mChart;
     private ColumnChartData previewData;
+    private WaterBottleView mWaterBottleView;
+    private DrinkFountainDevice mDrinkFountainDevice;
 
     // uuid
     private String uuid;
@@ -98,52 +107,80 @@ public class GraphicFragment extends Fragment {
     }
 
     private void initView(@NonNull View view) {
-        chart = (ColumnChartView) view.findViewById(R.id.chart);
-        previewChart = (PreviewColumnChartView) view.findViewById(R.id.chart_preview);
+        mChart = (ColumnChartView) view.findViewById(R.id.chart);
 
-        // Generate data for previewed chart and copy of that data for preview chart.
+        mWaterBottleView = (WaterBottleView) view.findViewById(R.id.water_bottle_graphic);
+        mWaterBottleView.disableTextInformation();
+
+
+        if (uuid != null) {
+            mDrinkFountainDevice = FacadeDatabase.getInstance().getDrinkFountainByUUid(uuid);
+
+            if (mDrinkFountainDevice != null) {
+                ((TextView) view.findViewById(R.id.water_graphic_title)).setText(mDrinkFountainDevice.getDescription());
+
+                String floor = "";
+                if (mDrinkFountainDevice.getFloor() == DrinkFountainDevice.GROUND_FLOOR) {
+                    floor = getString(R.string.ground_floor);
+                } else {
+                    floor = getString(R.string.first_floor);
+                }
+
+                ((TextView) view.findViewById(R.id.water_graphic_description)).setText(mDrinkFountainDevice.getDescription() + SEPARATOR + floor);
+
+                WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(uuid);
+                if (waterLevelData != null) {
+                    mWaterBottleView.setWaterHeight(waterLevelData.getCurrentValue());
+
+                    String waterReceived = getString(R.string.graphic_water_level) + SPACE + (int) waterLevelData.getCurrentValue() + LITERS;
+                    ((TextView) view.findViewById(R.id.water_graphic_rest)).setText(waterReceived);
+                }
+
+            }
+
+        }
+
+        // Generate data for previewed mChart and copy of that data for preview mChart.
         generateDefaultData();
 
-        chart.setColumnChartData(data);
-        // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
+        mChart.setColumnChartData(mColumnData);
+        // Disable zoom/scroll for previewed mChart, visible mChart ranges depends on preview mChart viewport so
         // zoom/scroll is unnecessary.
-        chart.setZoomEnabled(false);
-        chart.setScrollEnabled(false);
-        chart.setOnValueTouchListener(new ValueTouchListener());
+        mChart.setZoomEnabled(false);
+        mChart.setScrollEnabled(false);
+        mChart.setOnValueTouchListener(new ValueTouchListener());
 
-        previewChart.setColumnChartData(previewData);
-        previewChart.setViewportChangeListener(new ViewportListener());
-
-        previewX(false);
     }
 
     private void generateDefaultData() {
         if (!TextUtils.isEmpty(this.uuid)) {
-            final List<WaterLevelData> deviceHistory = FacadeDatabase.getInstance().getDeviceHistory(this.uuid);
+            final List<WaterLevelData> deviceHistorya = FacadeDatabase.getInstance().getDeviceHistory(this.uuid);
+
+            List<GraphicDate> listOfItems = graphAdjustments(deviceHistorya);
             // Sort the list by timestampt
-            Collections.sort(deviceHistory, new OrderListByTimestamp());
+            Collections.sort(listOfItems, new OrderListByTimestamp());
 
             final int numSubcolumns = 1;
-            final int numColumns = deviceHistory.size();
+            final int numColumns = listOfItems.size();
             final List<Column> columns = new ArrayList<Column>();
             List<SubcolumnValue> values;
-            WaterLevelData buffer;
+            GraphicDate buffer;
 
             // add the columns
             for (int count = 0; count < numColumns; ++count) {
                 values = new ArrayList<SubcolumnValue>();
-                buffer = deviceHistory.get(count);
+                buffer = listOfItems.get(count);
                 // add the subcolumns
                 for (int countSubColumns = 0; countSubColumns < numSubcolumns; ++countSubColumns) {
-                    final SubcolumnValue subcolumnValue = new SubcolumnValue(buffer.getCurrentValue(), ChartUtils.pickColor());
+                    final SubcolumnValue subcolumnValue = new SubcolumnValue(buffer.getValue(), ChartUtils.pickColor());
                     values.add(subcolumnValue);
                 }
                 columns.add(new Column(values));
             }
-            data = new ColumnChartData(columns);
+            mColumnData = new ColumnChartData(columns);
 
             // generate the axisX
-            List<AxisValue> axisValues = configureAxisX(deviceHistory);
+            List<AxisValue> axisValues = configureAxisX(listOfItems);
 
             // configure the axisX
             Axis axisX = new Axis();
@@ -157,11 +194,11 @@ public class GraphicFragment extends Fragment {
             axisY.setHasLines(true);
 
             // insert the axis into the data
-            data.setAxisXBottom(axisX);
-            data.setAxisYLeft(axisY);
+            mColumnData.setAxisXBottom(axisX);
+            mColumnData.setAxisYLeft(axisY);
 
-            // create a deep copy of data on preview chart
-            previewData = new ColumnChartData(data);
+            // create a deep copy of data on preview mChart
+            previewData = new ColumnChartData(mColumnData);
             for (Column column : previewData.getColumns()) {
                 for (SubcolumnValue value : column.getValues()) {
                     value.setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
@@ -170,86 +207,94 @@ public class GraphicFragment extends Fragment {
         }
     }
 
-    private List<AxisValue> configureAxisX(@NonNull List<WaterLevelData> list) {
+    private List<AxisValue> configureAxisX(@NonNull List<GraphicDate> list) {
         // sort the given list of WaterLevelData
         final List<AxisValue> axisValues = new ArrayList<>();
         final Calendar calendar = Calendar.getInstance();
         float lastCurrentTime = 0.0f;
-        int currentTimeSelected;
+        int currentDaySelected, currentMonthSelected;
         AxisValue axisValue;
         String timestampStr;
         String dayStr;
 
         for (int count = 0; count < list.size(); count++) {
-            timestampStr = list.get(count).getTimestamp();
+            timestampStr = list.get(count).getDateDescription();
             if (!TextUtils.isEmpty(timestampStr) && !timestampStr.equalsIgnoreCase("0")) {
                 calendar.setTimeInMillis(Long.parseLong(timestampStr));
-                currentTimeSelected = calendar.get(Calendar.DAY_OF_MONTH);
-                if (lastCurrentTime == 0 || lastCurrentTime != currentTimeSelected) {
+                currentDaySelected = calendar.get(Calendar.DAY_OF_MONTH);
+                currentMonthSelected = calendar.get(Calendar.MONTH) + 1;
+                if (lastCurrentTime == 0 || lastCurrentTime != currentDaySelected) {
                     // configure the axis
                     axisValue = new AxisValue(count);
-                    dayStr = String.valueOf(currentTimeSelected);
+                    dayStr = String.valueOf(currentDaySelected);
+                    dayStr = dayStr + "/" + currentMonthSelected;
                     axisValue.setLabel(dayStr);
 
                     // add the axis into the list
                     axisValues.add(axisValue);
 
-                    lastCurrentTime = currentTimeSelected;
+                    lastCurrentTime = currentDaySelected;
                 }
             }
         }
         return axisValues;
     }
 
+    public List<GraphicDate> graphAdjustments(List<WaterLevelData> historicalList) {
 
-    private static class OrderListByTimestamp implements Comparator<WaterLevelData> {
+        HashMap<Integer, GraphicDate> days = new HashMap<>();
+        List<GraphicDate> graphicDates = new ArrayList<>();
+        GraphicDate graphicDate;
+
+
+        for (WaterLevelData waterLevelData : historicalList) {
+            int key = Util.getDateByTime(waterLevelData.getTimestamp());
+            int count = LEVEL_FULL - (int) waterLevelData.getCurrentValue();
+            if (days.containsKey(key)) {
+                graphicDate = days.get(key);
+                count = graphicDate.getValue();
+                days.remove(key);
+                count++;
+            } else {
+                graphicDate = new GraphicDate(key, waterLevelData.getTimestamp(), count);
+            }
+
+            graphicDate.setValue(count);
+            days.put(key, graphicDate);
+        }
+
+        Iterator it = days.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            graphicDates.add((GraphicDate) pair.getValue());
+            it.remove();
+        }
+
+        return graphicDates;
+
+    }
+
+    private static class OrderListByTimestamp implements Comparator<GraphicDate> {
 
         @Override
-        public int compare(WaterLevelData waterLevelData, WaterLevelData t1) {
-            long timeStampOrig;
-            long timeStampRef;
-            Date dateOrigin;
-            Date dateRef;
-            if (waterLevelData != null && t1 != null
-                    && !TextUtils.isEmpty(waterLevelData.getTimestamp()) && !TextUtils.isEmpty(t1.getTimestamp())) {
-
-                // convert the times
-                timeStampOrig = Long.parseLong(waterLevelData.getTimestamp());
-                timeStampRef = Long.parseLong(t1.getTimestamp());
-
-                // Dates
-                dateOrigin = new Date(timeStampOrig);
-                dateRef = new Date(timeStampRef);
-
-                return dateOrigin.compareTo(dateRef);
+        public int compare(GraphicDate GraphicDateFirst, GraphicDate GraphicDateSecond) {
+            if (GraphicDateFirst != null && GraphicDateSecond != null) {
+                return Integer.compare(GraphicDateFirst.getOrder(), GraphicDateSecond.getOrder());
             }
             return 0;
         }
-    }
 
-    private void previewX(boolean animate) {
-
-        float four = 4;
-        Viewport tempViewport = new Viewport(chart.getMaximumViewport());
-        float dx = tempViewport.width() / four;
-        tempViewport.inset(dx, 0);
-        if (animate) {
-            previewChart.setCurrentViewportWithAnimation(tempViewport);
-        } else {
-            previewChart.setCurrentViewport(tempViewport);
-        }
-        previewChart.setZoomType(ZoomType.HORIZONTAL);
     }
 
     /**
-     * Viewport listener for preview chart(lower one). in {@link #onViewportChanged(Viewport)} method change
-     * viewport of upper chart.
+     * Viewport listener for preview mChart(lower one). in {@link #onViewportChanged(Viewport)} method change
+     * viewport of upper mChart.
      */
     private class ViewportListener implements ViewportChangeListener {
 
         @Override
         public void onViewportChanged(Viewport newViewport) {
-            chart.setCurrentViewport(newViewport);
+            mChart.setCurrentViewport(newViewport);
         }
     }
 

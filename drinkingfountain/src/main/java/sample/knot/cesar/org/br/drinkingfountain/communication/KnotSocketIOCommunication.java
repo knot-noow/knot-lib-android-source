@@ -25,11 +25,13 @@ import br.org.cesar.knot.lib.model.KnotList;
 import br.org.cesar.knot.lib.model.KnotQueryData;
 import br.org.cesar.knot.lib.model.KnotQueryDateData;
 import br.org.cesar.knot.lib.util.DateUtils;
+import br.org.cesar.knot.lib.util.LogLib;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
 import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 import sample.knot.cesar.org.br.drinkingfountain.model.WaterLevelData;
 import sample.knot.cesar.org.br.drinkingfountain.util.LogKnotDrinkFountain;
 import sample.knot.cesar.org.br.drinkingfountain.util.PreferenceUtil;
+import sample.knot.cesar.org.br.drinkingfountain.util.Util;
 
 
 public class KnotSocketIOCommunication implements KnotCommunication {
@@ -157,7 +159,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
 
             //Verify if the waterLevelData is valid
             if (waterLevelData != null) {
-                String timeStamp = waterLevelData.getTimestamp();
+                String timeStamp = Util.convertMillisecondsToValidFormat(Long.parseLong(waterLevelData.getTimestamp()));
 
                 try {
                     //Building the start date
@@ -179,7 +181,11 @@ public class KnotSocketIOCommunication implements KnotCommunication {
                 mKnotApi.socketIOGetData(waterLevelDataList, UUID_OWNER, TOKEN_OWNER, knotQueryData, new Event<List<WaterLevelData>>() {
                     @Override
                     public void onEventFinish(List<WaterLevelData> list) {
-                        mDrinkFountainDB.insertWalterLevelDataList(list);
+                        try {
+                            mDrinkFountainDB.insertWalterLevelDataList(list);
+                        } catch (ParseException e) {
+                            LogLib.printE(e);
+                        }
                     }
 
                     @Override

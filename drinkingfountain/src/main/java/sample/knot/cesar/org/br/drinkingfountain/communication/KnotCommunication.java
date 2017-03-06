@@ -10,6 +10,8 @@
 
 package sample.knot.cesar.org.br.drinkingfountain.communication;
 
+import java.text.ParseException;
+
 /**
  * Created by usuario on 11/02/17.
  */
@@ -27,7 +29,7 @@ public interface KnotCommunication {
     /**
      * Get data information about device behavior
      */
-    public void getDataByDevice();
+    public void getDataByDevice() throws ParseException;
 
 
 
