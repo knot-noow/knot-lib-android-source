@@ -16,18 +16,18 @@ import br.org.cesar.knot.lib.model.AbstractThingData;
 
 public class WaterLevelData extends AbstractThingData {
 
-    private String waterFountainUUID;
+    private String uuid;
     private float currentValue;
 
     public WaterLevelData(){
     }
 
     public String getWaterFountainUUID() {
-        return waterFountainUUID;
+        return uuid;
     }
 
     public void setWaterFountainUUID(String waterFountainUUID) {
-        this.waterFountainUUID = waterFountainUUID;
+        this.uuid = waterFountainUUID;
     }
 
     public float getCurrentValue() {

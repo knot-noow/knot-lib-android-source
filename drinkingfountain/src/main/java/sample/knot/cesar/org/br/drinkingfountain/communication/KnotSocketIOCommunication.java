@@ -123,6 +123,7 @@ public class KnotSocketIOCommunication implements KnotCommunication {
                 @Override
                 public void onEventFinish(List<DrinkFountainDevice> deviceList) {
                     mDrinkFountainDB.insertDrinkFountainList(deviceList);
+                    getDataByDevice();
                 }
 
                 @Override

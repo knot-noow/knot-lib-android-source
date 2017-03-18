@@ -56,7 +56,9 @@ public class DrinkFountainGridAdapter extends RecyclerView.Adapter<DrinkFountain
 
         WaterLevelData waterLevelData = mDataBase.getCurrentLevelByDeviceUUID(drinkFountainDevice.getUuid());
 
-        holder.mWaterBottleView.setWaterHeight(waterLevelData.getCurrentValue());
+        if(waterLevelData!=null){
+            holder.mWaterBottleView.setWaterHeight(waterLevelData.getCurrentValue());
+        }
         holder.mTitle.setText(drinkFountainDevice.getDescription());
 
         String floor="";

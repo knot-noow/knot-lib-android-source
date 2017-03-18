@@ -89,6 +89,8 @@ public class KnotHttpCommunication implements KnotCommunication {
 
                 if (deviceList != null) {
                     mDrinkFountainDB.insertDrinkFountainList(deviceList);
+
+                    getDataByDevice();
                 }
             }
 

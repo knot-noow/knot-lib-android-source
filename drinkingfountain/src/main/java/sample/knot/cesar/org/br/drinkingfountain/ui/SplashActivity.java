@@ -17,7 +17,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import sample.knot.cesar.org.br.drinkingfountain.R;
+import sample.knot.cesar.org.br.drinkingfountain.communication.KnotHttpCommunication;
 import sample.knot.cesar.org.br.drinkingfountain.database.FacadeDatabase;
+import sample.knot.cesar.org.br.drinkingfountain.service.SyncService;
 import sample.knot.cesar.org.br.drinkingfountain.util.Stub;
 
 public class SplashActivity extends AppCompatActivity {
@@ -29,17 +31,17 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (FacadeDatabase.getInstance().getAllDrinkFountain().size() == 0) {
-            new ExecuteStub().execute();
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
-                }
-            }, DELAYED);
-        }
+        Intent service = new Intent(this, SyncService.class);
+        service.setAction(SyncService.ACTION_SYNC_DATA);
+        startService(service);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+        }, DELAYED);
 
     }
 
@@ -55,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
 
             Stub stub = new Stub();
-            stub.executeStub(2, 1000);
+            stub.executeStub(4, 1000);
             return null;
         }
 

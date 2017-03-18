@@ -30,6 +30,8 @@ class DrinkFountainDAO {
     public static final int INVALID_LEVEL = -1;
     private SQLiteDatabase sqliteDatabase;
 
+    private static final int CONVERT_TO_LITERS = 1000;
+
     //DB constants
     private static final String EQUALS = " = ? ";
     private static final String BIGGER_THEN = " > ? ";
@@ -277,6 +279,7 @@ class DrinkFountainDAO {
         for (WaterLevelData currentWalterLevelData : waterLevelDataList) {
             if (currentWalterLevelData != null) {
                 currentWalterLevelData.setTimestamp(Util.convertDBFormatToMilliseconds(currentWalterLevelData.getTimestamp()));
+                currentWalterLevelData.setCurrentValue(currentWalterLevelData.getCurrentValue()/CONVERT_TO_LITERS);
                 long rowId = insertWalterLevelData(currentWalterLevelData);
 
                 if (rowId != -1) {
@@ -305,20 +308,22 @@ class DrinkFountainDAO {
 
         WaterLevelData waterLevelData = getCurrentLevelByDeviceUUID(drinkFountainUUID);
 
-        String[] args = new String[]{drinkFountainUUID, String.valueOf(Util.getDateLimit(waterLevelData))};
+        if(waterLevelData!=null){
+            String[] args = new String[]{drinkFountainUUID, String.valueOf(Util.getDateLimit(waterLevelData))};
 
-        Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
-                null, WHERE_WATER_DRINK_HISTORICAL, args, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    WaterLevelData currentWalterLevel = buildWalterLevelDataByCursor(cursor);
+            Cursor cursor = sqliteDatabase.query(WaterLevelData.Columns.TABLE_WATER_LEVEL_DATA,
+                    null, WHERE_WATER_DRINK_HISTORICAL, args, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        WaterLevelData currentWalterLevel = buildWalterLevelDataByCursor(cursor);
 
-                    waterLevelList.add(currentWalterLevel);
-                    cursor.moveToNext();
-                } while (!cursor.isAfterLast());
+                        waterLevelList.add(currentWalterLevel);
+                        cursor.moveToNext();
+                    } while (!cursor.isAfterLast());
+                }
+                cursor.close();
             }
-            cursor.close();
         }
 
         return waterLevelList;

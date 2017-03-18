@@ -18,6 +18,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import sample.knot.cesar.org.br.drinkingfountain.communication.KnotHttpCommunication;
+
 public class SyncService extends Service {
 
     /**
@@ -135,7 +137,8 @@ public class SyncService extends Service {
         if (syncStatus != SyncStatus.BUSSY) {
             syncStatus = SyncStatus.BUSSY;
 
-            // TODO - call the controller communication to force a sync of all data and release the syncStatus to idle
+            KnotHttpCommunication.getInstance().getAllDevices();
+
             syncStatus = SyncStatus.IDLE;
         }
     }
