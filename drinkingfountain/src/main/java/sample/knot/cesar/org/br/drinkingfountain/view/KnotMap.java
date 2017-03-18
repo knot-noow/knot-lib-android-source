@@ -31,7 +31,7 @@ import sample.knot.cesar.org.br.drinkingfountain.model.DrinkFountainDevice;
 public class KnotMap extends FrameLayout {
 
 
-    private static final int ITEM_SIZE = 70;
+    private static final int ITEM_SIZE = 50;
     private static final float SCALE_MIN = 0.5f;
     private static final float SCALE_MAX = 1.5f;
 

@@ -27,8 +27,8 @@
     <string name="save">Salvar</string>
 
     <!-- GraphicActivity -->
-    <string name="graphic_use">Consumo</string>
-    <string name="graphic_liters">Litros</string>
+    <string name="graphic_use">dia/mês</string>
+    <string name="graphic_liters">Consumo em Litros</string>
     <string name="graphic_use_of_day">Consumo no dia: </string>Nível
     <string name="graphic_water_level">Nível atual: </string>
 
