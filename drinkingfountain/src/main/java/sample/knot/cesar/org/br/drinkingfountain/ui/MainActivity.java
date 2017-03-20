@@ -16,7 +16,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,7 +24,6 @@ import android.view.MenuItem;
 import sample.knot.cesar.org.br.drinkingfountain.R;
 import sample.knot.cesar.org.br.drinkingfountain.ui.fragment.DrinkingFountainFragment;
 import sample.knot.cesar.org.br.drinkingfountain.ui.fragment.MapFragment;
-import sample.knot.cesar.org.br.drinkingfountain.util.Stub;
 import sample.knot.cesar.org.br.drinkingfountain.view.CustomViewPager;
 
 public class MainActivity extends AppCompatActivity {
@@ -88,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleAboutMenu() {
         // TODO - finish this code later
-    }
-
-    private void handleSettingsMenu() {
-        Intent it = new Intent(MainActivity.this, SettingsActivity.class);
+        Intent it = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(it);
     }
 
-
+   private void handleSettingsMenu() {
+        Intent it = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(it);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Adapter

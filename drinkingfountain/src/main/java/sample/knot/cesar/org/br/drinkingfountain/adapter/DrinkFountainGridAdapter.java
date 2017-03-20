@@ -59,7 +59,7 @@ public class DrinkFountainGridAdapter extends RecyclerView.Adapter<DrinkFountain
         if(waterLevelData!=null){
             holder.mWaterBottleView.setWaterHeight(waterLevelData.getCurrentValue());
         }
-        holder.mTitle.setText(drinkFountainDevice.getDescription());
+
 
         String floor="";
         if(drinkFountainDevice.getFloor() == DrinkFountainDevice.GROUND_FLOOR){
@@ -68,7 +68,11 @@ public class DrinkFountainGridAdapter extends RecyclerView.Adapter<DrinkFountain
             floor = mContext.getResources().getString(R.string.first_floor);
         }
 
-        holder.mDesciption.setText(drinkFountainDevice.getDescription() + SEPARATOR +floor);
+        if(drinkFountainDevice.getDescription()!=null){
+            holder.mTitle.setText(drinkFountainDevice.getDescription());
+            holder.mDesciption.setText(drinkFountainDevice.getDescription() + SEPARATOR +floor);
+        }
+
         holder.mWaterBottleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

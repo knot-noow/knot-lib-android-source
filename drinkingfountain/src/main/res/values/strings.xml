@@ -10,7 +10,7 @@
 
 <resources>
 
-    <string name="app_name">DrinkingFountain</string>
+    <string name="app_name">Knot Bebedouros</string>
     <string name="main_activity_label">KNoT Bebedouros </string>
     <string name="splash_activity_label">KNoT \n Bebedouros </string>
     <string name="profile_activity_label">Perfil </string>
@@ -39,4 +39,7 @@
 
     <!--WaterView-->
     <string name="liters">L</string>
+
+    <!-- AboutActivity-->
+    <string name="open_license_title">Open Source License</string>
 </resources>

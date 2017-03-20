@@ -117,7 +117,6 @@ public class GraphicFragment extends Fragment {
             mDrinkFountainDevice = FacadeDatabase.getInstance().getDrinkFountainByUUid(uuid);
 
             if (mDrinkFountainDevice != null) {
-                ((TextView) view.findViewById(R.id.water_graphic_title)).setText(mDrinkFountainDevice.getDescription());
 
                 String floor = "";
                 if (mDrinkFountainDevice.getFloor() == DrinkFountainDevice.GROUND_FLOOR) {
@@ -126,7 +125,11 @@ public class GraphicFragment extends Fragment {
                     floor = getString(R.string.first_floor);
                 }
 
-                ((TextView) view.findViewById(R.id.water_graphic_description)).setText(mDrinkFountainDevice.getDescription() + SEPARATOR + floor);
+                if(mDrinkFountainDevice.getDescription()!=null){
+                    ((TextView) view.findViewById(R.id.water_graphic_title)).setText(mDrinkFountainDevice.getDescription());
+                    ((TextView) view.findViewById(R.id.water_graphic_description)).setText(mDrinkFountainDevice.getDescription() + SEPARATOR + floor);
+                }
+
 
                 WaterLevelData waterLevelData = FacadeDatabase.getInstance().getCurrentLevelByDeviceUUID(uuid);
                 if (waterLevelData != null) {

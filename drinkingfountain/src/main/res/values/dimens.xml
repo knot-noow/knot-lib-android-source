@@ -57,5 +57,10 @@
     <dimen name="splash_margin_bottom">30dp</dimen>
 
 
+    <!-- About Activity dimensions -->
+    <dimen name="about_margin_top">20dp</dimen>
+    <dimen name="about_text_margin_top">10dp</dimen>
+    <dimen name="about_webview_margin">5dp</dimen>
+
 
 </resources>
